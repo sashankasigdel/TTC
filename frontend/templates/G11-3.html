@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Notes - The Tuition Class</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Additional styles specific to notes page */
+    .notes-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .chapter-info {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .chapter-progress {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .progress-bar {
+      flex-grow: 1;
+      height: 8px;
+      background-color: var(--gray-light);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary-color);
+      width: 100%; /* Adjust based on actual progress */
+    }
+    
+    .notes-content {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+      min-height: 400px;
+    }
+    
+    .notes-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn-disabled {
+      background-color: var(--gray-light);
+      color: var(--gray);
+      cursor: not-allowed;
+    }
+    
+    .btn-disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .notes-tools {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .tool-btn {
+      background: white;
+      border: 1px solid var(--gray-light);
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    
+    .tool-btn:hover {
+      background: var(--light-color);
+      border-color: var(--primary-color);
+    }
+    
+    .highlight-yellow {
+      background-color: #fff9c4;
+    }
+    
+    .highlight-pink {
+      background-color: #f8bbd0;
+    }
+    
+    .highlight-blue {
+      background-color: #bbdefb;
+    }
+    
+    .note-text {
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+    
+    .note-text h3 {
+      color: var(--primary-color);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .note-text ul, .note-text ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .note-text li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .formula-box {
+      background: var(--light-color);
+      padding: 1rem;
+      border-left: 4px solid var(--primary-color);
+      margin: 1.5rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+    }
+    
+    .important-point {
+      background: #fff3e0;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin: 1rem 0;
+      border-left: 4px solid var(--accent-color);
+    }
+    
+    @media (max-width: 768px) {
+      .notes-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .notes-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .nav-buttons {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .nav-buttons .btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <span>The Tuition Class</span>
+      </div>
+      <nav id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html">Courses</a>
+        <a href="news.html">News</a>
+        <a href="tools.html">Tools</a>
+        <a href="about.html">About Us</a>
+        <a href="#" class="btn-login">Login</a>
+      </nav>
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notes Content -->
+  <div class="notes-container">
+    <div class="notes-header">
+      <h1 class="section-title">GRADE 11 ECONOMICS</h1>
+      <div class="search-box">
+        <input type="text" placeholder="Search in notes..." class="tool-btn" style="min-width: 250px;">
+      </div>
+    </div>
+
+    
+    <div class="chapter-info">
+      <h2 class="chapter-title">Chapter 3:Elasticity of Demand and Supply</h2>
+      <p> You Can Contribute notes in Below button Contribution Notes </p>
+      
+      <div class="chapter-progress">
+        <span>Progress: 1/1 pages</span>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="notes-tools">
+      <button class="tool-btn" id="highlight-yellow">
+        <i class="fas fa-highlighter"></i> Highlight
+      </button>
+    <button class="tool-btn">
+  <a href="https://drive.google.com/drive/folders/1nFkSKveigvWQ7dHFYaZoSobqiyi8SUtP?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <i class="fas fa-sticky-note"></i> Contribute Note
+  </a>
+</button>
+  <button class="tool-btn">
+  <a href="https://youtu.be/" target="_blank" rel="noopener noreferrer">
+    <i class="fas fa-sticky-not"></i> ▶️ Video Part 1
+  </a>
+</button>
+
+
+<!-- Chapter Body Start -->
+
+<div class="notes-content">
+  <div class="note-text">
+    
+    <h3>1. Elasticity of Demand</h3>
+    <p>Elasticity of demand measures how much the quantity demanded of a commodity changes in response to changes in its determinants (price, income, or price of related goods).</p>
+    
+    <div class="important-point">
+      <strong>Types of Elasticity of Demand</strong>
+      <ul>
+        <li>Price Elasticity of Demand</li>
+        <li>Income Elasticity of Demand</li>
+        <li>Cross Elasticity of Demand</li>
+      </ul>
+    </div>
+    
+    <h4>A. Price Elasticity of Demand (E<sub>p</sub>)</h4>
+    <p>It shows the responsiveness of demand to a change in the price of a commodity.</p>
+    
+    <div class="formula-box">
+      E<sub>p</sub> = (∆Q/∆P) × (P/Q)
+    </div>
+    
+    <div class="variables-list">
+      <strong>where,</strong>
+      <table class="variables-table">
+        <tr>
+          <td>E<sub>p</sub></td>
+          <td>=</td>
+          <td>Coefficient of price elasticity of demand</td>
+        </tr>
+        <tr>
+          <td>Q</td>
+          <td>=</td>
+          <td>Initial quantity demanded</td>
+        </tr>
+        <tr>
+          <td>∆Q</td>
+          <td>=</td>
+          <td>Change in Quantity demanded</td>
+        </tr>
+        <tr>
+          <td>∆P</td>
+          <td>=</td>
+          <td>Change in Price</td>
+        </tr>
+        <tr>
+          <td>P</td>
+          <td>=</td>
+          <td>Initial Price</td>
+        </tr>
+      </table>
+    </div>
+    
+    <h5>Types of Price Elasticity:</h5>
+    <div class="elasticity-types">
+      <div class="elasticity-card">
+        <strong>Perfectly Elastic Demand (E<sub>p</sub> = ∞)</strong>
+        <p>Demand changes infinitely even with a slight change in price.</p>
+        <div class="graph-placeholder">[Horizontal Demand Curve]</div>
+      </div>
+      
+      <div class="elasticity-card">
+        <strong>Perfectly Inelastic Demand (E<sub>p</sub> = 0)</strong>
+        <p>Demand remains constant despite price change.</p>
+        <div class="graph-placeholder">[Vertical Demand Curve]</div>
+      </div>
+      
+      <div class="elasticity-card">
+        <strong>Unitary Elastic Demand (E<sub>p</sub> = 1)</strong>
+        <p>% change in demand equals % change in price.</p>
+        <div class="graph-placeholder">[Rectangular Hyperbola Curve]</div>
+      </div>
+      
+      <div class="elasticity-card">
+        <strong>Relatively Elastic Demand (E<sub>p</sub> > 1)</strong>
+        <p>Demand changes more than price.</p>
+        <div class="graph-placeholder">[Flatter Demand Curve]</div>
+      </div>
+      
+      <div class="elasticity-card">
+        <strong>Relatively Inelastic Demand (E<sub>p</sub> < 1)</strong>
+        <p>Demand changes less than price.</p>
+        <div class="graph-placeholder">[Steeper Demand Curve]</div>
+      </div>
+    </div>
+    
+    <h4>B. Income Elasticity of Demand (E<sub>Y</sub>)</h4>
+    <p>It measures the responsiveness of demand to a change in the income of the consumer.</p>
+    
+    <div class="formula-box">
+      E<sub>Y</sub> = (∆Q/∆Y) × (Y/Q)
+    </div>
+    
+    <div class="variables-list">
+      <strong>where,</strong>
+      <table class="variables-table">
+        <tr>
+          <td>E<sub>Y</sub></td>
+          <td>=</td>
+          <td>Coefficient of income elasticity of demand</td>
+        </tr>
+        <tr>
+          <td>Q</td>
+          <td>=</td>
+          <td>Initial quantity demanded</td>
+        </tr>
+        <tr>
+          <td>∆Q</td>
+          <td>=</td>
+          <td>Change in Quantity demanded</td>
+        </tr>
+        <tr>
+          <td>∆Y</td>
+          <td>=</td>
+          <td>Change in Income</td>
+        </tr>
+        <tr>
+          <td>Y</td>
+          <td>=</td>
+          <td>Initial Income</td>
+        </tr>
+      </table>
+    </div>
+    
+    <h5>Types of Income Elasticity:</h5>
+    <div class="income-elasticity-types">
+      <div class="income-card">
+        <strong>Positive (E<sub>Y</sub> > 0)</strong>
+        <p>Demand rises with income.</p>
+        <div class="sub-types">
+          <div class="sub-type">
+            <strong>Greater than unity (E<sub>Y</sub> > 1)</strong>
+            <p>The percentage increase in demand is more than percentage increase in income and vice versa.</p>
+            <p><em>For Ex. Luxury goods</em></p>
+            <div class="graph-placeholder small">[Steep Positive Slope]</div>
+          </div>
+          <div class="sub-type">
+            <strong>Less than unity (E<sub>Y</sub> < 1)</strong>
+            <p>The percentage increase in demand is less than percentage increase in income and vice versa.</p>
+            <p><em>For Ex. Necessities</em></p>
+            <div class="graph-placeholder small">[Gentle Positive Slope]</div>
+          </div>
+          <div class="sub-type">
+            <strong>Equal to unity (E<sub>Y</sub> = 1)</strong>
+            <p>The percentage increase in demand is equal to percentage increase in income and vice versa.</p>
+            <p><em>For Ex. Normal goods</em></p>
+            <div class="graph-placeholder small">[45° Line]</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="income-card">
+        <strong>Zero (E<sub>Y</sub> = 0)</strong>
+        <p>Demand unaffected by income.</p>
+        <p><em>For Ex. Salt</em></p>
+        <div class="graph-placeholder">[Vertical Line]</div>
+      </div>
+      
+      <div class="income-card">
+        <strong>Negative (E<sub>Y</sub> < 0)</strong>
+        <p>Demand falls as income rises (inferior goods).</p>
+        <div class="graph-placeholder">[Downward Slope]</div>
+      </div>
+    </div>
+    
+    <h4>C. Cross Elasticity of Demand (E<sub>XY</sub>)</h4>
+    <p>It shows how the demand for one good (X) responds to the price change of another good (Y).</p>
+    
+    <div class="formula-box">
+      E<sub>XY</sub> = (∆Q<sub>X</sub>/∆P<sub>Y</sub>) × (P<sub>Y</sub>/Q<sub>X</sub>)
+    </div>
+    
+    <div class="variables-list">
+      <strong>where,</strong>
+      <table class="variables-table">
+        <tr>
+          <td>E<sub>XY</sub></td>
+          <td>=</td>
+          <td>Coefficient of Cross elasticity of demand</td>
+        </tr>
+        <tr>
+          <td>∆Q<sub>X</sub></td>
+          <td>=</td>
+          <td>Change in the demand for commodity-X</td>
+        </tr>
+        <tr>
+          <td>∆P<sub>Y</sub></td>
+          <td>=</td>
+          <td>Change in price of commodity-Y</td>
+        </tr>
+        <tr>
+          <td>P<sub>Y</sub></td>
+          <td>=</td>
+          <td>Price of commodity-Y</td>
+        </tr>
+        <tr>
+          <td>Q<sub>X</sub></td>
+          <td>=</td>
+          <td>Quantity of commodity-X</td>
+        </tr>
+      </table>
+    </div>
+    
+    <h5>Types of Cross Elasticity:</h5>
+    <div class="cross-elasticity-types">
+      <div class="cross-card">
+        <strong>Positive (E<sub>XY</sub> > 0)</strong>
+        <p>Substitute goods (tea and coffee)</p>
+        <div class="graph-placeholder">[Upward Slope]</div>
+      </div>
+      
+      <div class="cross-card">
+        <strong>Negative (E<sub>XY</sub> < 0)</strong>
+        <p>Complementary goods (car and petrol)</p>
+        <div class="graph-placeholder">[Downward Slope]</div>
+      </div>
+      
+      <div class="cross-card">
+        <strong>Zero (E<sub>XY</sub> = 0)</strong>
+        <p>Unrelated goods</p>
+        <div class="graph-placeholder">[Horizontal Line]</div>
+      </div>
+    </div>
+    
+    <h4>Determinants of Elasticity of Demand</h4>
+    <div class="factors-grid">
+      <div class="factor-column">
+        <ul>
+          <li>Nature of the commodity</li>
+          <li>Availability of substitutes</li>
+          <li>Number of uses</li>
+          <li>Income level of consumers</li>
+        </ul>
+      </div>
+      <div class="factor-column">
+        <ul>
+          <li>Joint demand</li>
+          <li>Postponement of consumption</li>
+          <li>Habits</li>
+          <li>Price level</li>
+          <li>Time period</li>
+        </ul>
+      </div>
+    </div>
+    
+    <h3>2. Elasticity of Supply</h3>
+    <p>Elasticity of supply measures how much the quantity supplied of a commodity changes with a change in its price.</p>
+    
+    <div class="formula-box">
+      E<sub>S</sub> = (∆Q/∆P) × (P/Q)
+    </div>
+    
+    <div class="variables-list">
+      <strong>where,</strong>
+      <table class="variables-table">
+        <tr>
+          <td>E<sub>S</sub></td>
+          <td>=</td>
+          <td>Coefficient of elasticity of supply or price elasticity of supply</td>
+        </tr>
+        <tr>
+          <td>P</td>
+          <td>=</td>
+          <td>Initial price</td>
+        </tr>
+        <tr>
+          <td>Q</td>
+          <td>=</td>
+          <td>Initial quantity supplied</td>
+        </tr>
+        <tr>
+          <td>∆Q</td>
+          <td>=</td>
+          <td>Change in Quantity Supplied</td>
+        </tr>
+        <tr>
+          <td>∆P</td>
+          <td>=</td>
+          <td>Change in price</td>
+        </tr>
+      </table>
+    </div>
+    
+    <h4>Types of Elasticity of Supply:</h4>
+    <div class="supply-elasticity-types">
+      <div class="supply-card">
+        <strong>Perfectly Elastic (E<sub>S</sub> = ∞)</strong>
+        <p>If negligible change in the price results in the infinite or unlimited change in the quantity supplied.</p>
+        <div class="graph-placeholder">[Horizontal Supply Curve]</div>
+      </div>
+      
+      <div class="supply-card">
+        <strong>Perfectly Inelastic (E<sub>S</sub> = 0)</strong>
+        <p>If there is no change in the quantity supplied despite the change in the price of the commodity.</p>
+        <div class="graph-placeholder">[Vertical Supply Curve]</div>
+      </div>
+      
+      <div class="supply-card">
+        <strong>Unitary Elastic (E<sub>S</sub> = 1)</strong>
+        <p>If the percentage change in quantity supplied is equal to the percentage change in the price of the commodity.</p>
+        <div class="graph-placeholder">[45° Supply Curve]</div>
+      </div>
+      
+      <div class="supply-card">
+        <strong>Relatively Elastic (E<sub>S</sub> > 1)</strong>
+        <p>If the percentage change in the quantity supplied of a commodity is more than the percentage change in the price of the commodity.</p>
+        <div class="graph-placeholder">[Flatter Supply Curve]</div>
+      </div>
+      
+      <div class="supply-card">
+        <strong>Relatively Inelastic (E<sub>S</sub> < 1)</strong>
+        <p>If the percentage change in the quantity supplied of a commodity is less than the percentage change in the price of the commodity.</p>
+        <div class="graph-placeholder">[Steeper Supply Curve]</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chapter Body End -->
+
+<style>
+.notes-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.note-text {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.note-text h2 {
+  color: #4299e1;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid #4299e1;
+  padding-bottom: 0.5rem;
+}
+
+.note-text h3 {
+  color: #4299e1;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #4299e1;
+  padding-left: 1rem;
+}
+
+.note-text h4 {
+  color: #2d3748;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.note-text h5 {
+  color: #4a5568;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.note-text ul, .note-text ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.note-text li {
+  margin-bottom: 0.5rem;
+}
+
+.important-point {
+  background: #fff3e0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border-left: 4px solid #ed8936;
+}
+
+.important-point strong {
+  color: #ed8936;
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.formula-box {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-left: 4px solid #4299e1;
+  margin: 1.5rem 0;
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  text-align: center;
+  border-radius: 0 8px 8px 0;
+  font-weight: 600;
+}
+
+.variables-list {
+  background: #f0fff4;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 4px solid #48bb78;
+}
+
+.variables-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.variables-table td {
+  padding: 8px 5px;
+  border: none;
+  vertical-align: top;
+}
+
+.variables-table tr td:first-child {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.variables-table tr td:nth-child(2) {
+  text-align: center;
+  color: #718096;
+  width: 30px;
+}
+
+/* Elasticity Types Grid */
+.elasticity-types,
+.supply-elasticity-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.elasticity-card,
+.supply-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.elasticity-card:hover,
+.supply-card:hover {
+  border-color: #4299e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.elasticity-card strong,
+.supply-card strong {
+  color: #2d3748;
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+/* Income Elasticity Types */
+.income-elasticity-types {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.income-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.income-card strong {
+  color: #2d3748;
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.sub-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.sub-type {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Cross Elasticity Types */
+.cross-elasticity-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.cross-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+/* Graph Placeholders */
+.graph-placeholder {
+  background: #e2e8f0;
+  height: 100px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-style: italic;
+  margin-top: 1rem;
+  border: 1px dashed #cbd5e0;
+}
+
+.graph-placeholder.small {
+  height: 60px;
+  font-size: 0.9rem;
+}
+
+/* Factors Grid */
+.factors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.factor-column {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.factor-column ul {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .elasticity-types,
+  .supply-elasticity-types,
+  .cross-elasticity-types,
+  .factors-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .sub-types {
+    grid-template-columns: 1fr;
+  }
+  
+  .notes-content {
+    padding: 1rem;
+  }
+  
+  .formula-box {
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+}
+</style>
+
+<style>
+.notes-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.note-text {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.note-text h2 {
+  color: #4299e1;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid #4299e1;
+  padding-bottom: 0.5rem;
+}
+
+.note-text h3 {
+  color: #4299e1;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #4299e1;
+  padding-left: 1rem;
+}
+
+.note-text h4 {
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.note-text ul, .note-text ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.note-text li {
+  margin-bottom: 0.5rem;
+}
+
+.important-point {
+  background: #fff3e0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border-left: 4px solid #ed8936;
+}
+
+.important-point strong {
+  color: #ed8936;
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.definition-box {
+  background: #e6fffa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 4px solid #38b2ac;
+  font-style: italic;
+}
+
+.formula-box {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-left: 4px solid #4299e1;
+  margin: 1rem 0;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  text-align: center;
+  border-radius: 0 8px 8px 0;
+}
+
+.variables-list {
+  background: #f0fff4;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 4px solid #48bb78;
+}
+
+.variables-list ul {
+  margin-bottom: 0;
+}
+
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notes-table th {
+  background-color: #4299e1;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.notes-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.notes-table tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.notes-table tr:hover {
+  background-color: #f0f7ff;
+}
+
+.demand-types {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.demand-category {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.factors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.factor-column {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .demand-types,
+  .factors-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .notes-content {
+    padding: 1rem;
+  }
+}
+</style>
+<!-- Chapter Body End -->
+
+<style>
+.notes-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  min-height: 400px;
+}
+
+.note-text {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.note-text h2 {
+  color: #4299e1;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid #4299e1;
+  padding-bottom: 0.5rem;
+}
+
+.note-text h3 {
+  color: #4299e1;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #4299e1;
+  padding-left: 1rem;
+}
+
+.note-text h4 {
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.note-text ul, .note-text ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.note-text li {
+  margin-bottom: 0.5rem;
+}
+
+.important-point {
+  background: #fff3e0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border-left: 4px solid #ed8936;
+}
+
+.important-point strong {
+  color: #ed8936;
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.formula-box {
+  background: #f7fafc;
+  padding: 1rem;
+  border-left: 4px solid #4299e1;
+  margin: 1.5rem 0;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+}
+
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notes-table th {
+  background-color: #4299e1;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.notes-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.notes-table tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.notes-table tr:hover {
+  background-color: #f0f7ff;
+}
+</style>
+
+
+<!--Chapter End-->
+
+    <div class="notes-actions">
+      <div class="nav-buttons">
+        <a href="G11-2.html" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Previous Page
+        </a>
+        <a href="G11-4.html" class="btn btn-primary">
+          Next Page <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      
+      <a href="G1-ALL.html" class="btn btn-outline">
+        <i class="fas fa-list"></i> Back to Chapters
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+ <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>The Tuition Class</span>
+          </div>
+          <p>Your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@TheTuitionClass"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Courses</h3>
+          <ul>
+            <li><a href="G1-ALL.html">Grade 11</a></li>
+            <li><a href="grade12.html">Grade 12</a></li>
+            <li><a href="bbs1.html">BBS 1st Year</a></li>
+            <li><a href="bbs2.html">BBS 2nd Year</a></li>
+            <li><a href="mbs1.html">MBS 1st Sem</a></li>
+            <li><a href="mbs2.html">MBS 2nd Sem</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Pokhara, Nepal</li>
+            <li><i class="fas fa-phone"></i> +977 9745289791</li>
+            <li><i class="fas fa-envelope"></i> thetuitionclass01@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 The Tuition Class. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      
+      menuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+      });
+      
+      // Close menu when clicking on a link
+      const navItems = document.querySelectorAll('#nav-links a');
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+        });
+      });
+      
+      // Highlight functionality
+      const highlightBtn = document.getElementById('highlight-yellow');
+      let isHighlighting = false;
+      
+      highlightBtn.addEventListener('click', function() {
+        isHighlighting = !isHighlighting;
+        
+        if (isHighlighting) {
+          highlightBtn.style.backgroundColor = '#fff9c4';
+          document.body.style.cursor = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23FFD700\' d=\'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z\'/%3E%3C/svg%3E") 0 16, auto';
+        } else {
+          highlightBtn.style.backgroundColor = '';
+          document.body.style.cursor = 'default';
+        }
+      });
+      
+      // Text selection highlighting
+      document.addEventListener('mouseup', function() {
+        if (isHighlighting) {
+          const selection = window.getSelection();
+          if (selection.toString().length > 0) {
+            const range = selection.getRangeAt(0);
+            const highlight = document.createElement('span');
+            highlight.className = 'highlight-yellow';
+            highlight.textContent = selection.toString();
+            range.deleteContents();
+            range.insertNode(highlight);
+            selection.removeAllRanges();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

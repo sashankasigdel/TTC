@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Notes - The Tuition Class</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Additional styles specific to notes page */
+    .notes-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .chapter-info {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .chapter-progress {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .progress-bar {
+      flex-grow: 1;
+      height: 8px;
+      background-color: var(--gray-light);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary-color);
+      width: 100%; /* Adjust based on actual progress */
+    }
+    
+    .notes-content {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+      min-height: 400px;
+    }
+    
+    .notes-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn-disabled {
+      background-color: var(--gray-light);
+      color: var(--gray);
+      cursor: not-allowed;
+    }
+    
+    .btn-disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .notes-tools {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .tool-btn {
+      background: white;
+      border: 1px solid var(--gray-light);
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    
+    .tool-btn:hover {
+      background: var(--light-color);
+      border-color: var(--primary-color);
+    }
+    
+    .highlight-yellow {
+      background-color: #fff9c4;
+    }
+    
+    .highlight-pink {
+      background-color: #f8bbd0;
+    }
+    
+    .highlight-blue {
+      background-color: #bbdefb;
+    }
+    
+    .note-text {
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+    
+    .note-text h3 {
+      color: var(--primary-color);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .note-text ul, .note-text ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .note-text li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .formula-box {
+      background: var(--light-color);
+      padding: 1rem;
+      border-left: 4px solid var(--primary-color);
+      margin: 1.5rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+    }
+    
+    .important-point {
+      background: #fff3e0;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin: 1rem 0;
+      border-left: 4px solid var(--accent-color);
+    }
+    
+    @media (max-width: 768px) {
+      .notes-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .notes-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .nav-buttons {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .nav-buttons .btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <span>The Tuition Class</span>
+      </div>
+      <nav id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="news.html">News</a>
+        <a href="tools.html">Tools</a>
+        <a href="about.html">About Us</a>
+        <a href="#" class="btn-login">Login</a>
+      </nav>
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notes Content -->
+  <div class="notes-container">
+    <div class="notes-header">
+      <h1 class="section-title">GRADE 11 ECONOMICS</h1>
+      <div class="search-box">
+        <input type="text" placeholder="Search in notes..." class="tool-btn" style="min-width: 250px;">
+      </div>
+    </div>
+
+    
+    <div class="chapter-info">
+      <h2 class="chapter-title">Chapter 10 : Nepalese Economy</h2>
+      <p> You Can Contribute notes in Below button Contribution Notes </p>
+      
+      <div class="chapter-progress">
+        <span>Progress: 1/1 pages</span>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="notes-tools">
+      <button class="tool-btn" id="highlight-yellow">
+        <i class="fas fa-highlighter"></i> Highlight
+      </button>
+    <button class="tool-btn">
+  <a href="https://drive.google.com/drive/folders/1nFkSKveigvWQ7dHFYaZoSobqiyi8SUtP?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <i class="fas fa-sticky-note"></i> Contribute Note
+  </a>
+</button>
+
+
+<!-- Chapter Body Start -->
+<!-- Chapter Body Start -->
+
+<div class="notes-content">
+  <div class="note-text">
+    <h3>Overview of Nepalese Economy</h3>
+    <div class="definition-box">
+      <p><strong>Nepalese Economy</strong> is characterized as one of the least developed countries in the world with very low per capita income and mass poverty. The structure of the economy is fragile; the economic environment is not favourable; performance of the economy is weak, and development indicators are unfavourable.</p>
+      <div class="modern-concept">
+        <p><strong>Contemporary Challenge:</strong> The economy has mainly been characterized by a long period of political transition and uncertain economic environment. Because of various socio-economic and political obstacles, there is high rate of unemployment, inequality and poverty in the country.</p>
+      </div>
+    </div>
+
+    <h3>Contemporary Features of Nepalese Economy</h3>
+    <div class="indicators-intro">
+      <p>The contemporary features of Nepalese economy highlight both the structural characteristics and developmental challenges facing the nation:</p>
+    </div>
+
+    <div class="characteristics-grid">
+      <div class="characteristic-card">
+        <div class="char-number">1</div>
+        <div class="char-content">
+          <strong>Low per capita income</strong>
+          <p>One of the lowest in South Asia at approximately $1,190</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">2</div>
+        <div class="char-content">
+          <strong>Mass poverty</strong>
+          <p>About 25% population below poverty line</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">3</div>
+        <div class="char-content">
+          <strong>Excessive dependence on agriculture</strong>
+          <p>65% workforce in agriculture contributing 25% to GDP</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">4</div>
+        <div class="char-content">
+          <strong>Underutilization of natural resources</strong>
+          <p>Abundant water, mineral resources not fully harnessed</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">5</div>
+        <div class="char-content">
+          <strong>High trade deficit</strong>
+          <p>Persistent imbalance with imports exceeding exports</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">6</div>
+        <div class="char-content">
+          <strong>Dualistic and mixed economic system</strong>
+          <p>Modern and traditional sectors operating side by side</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">7</div>
+        <div class="char-content">
+          <strong>High population growth</strong>
+          <p>1.8% growth rate creating demographic pressure</p>
+        </div>
+      </div>
+      
+      <div class="characteristic-card">
+        <div class="char-number">8</div>
+        <div class="char-content">
+          <strong>Remittance economy</strong>
+          <p>25% of GDP from foreign employment remittances</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Macroeconomic Indicators</h3>
+    <div class="definition-box">
+      <p><strong>Macroeconomic Indicators</strong> provide a comprehensive picture of Nepal's national economic performance and are crucial for policy formulation and economic planning at both federal and provincial levels.</p>
+    </div>
+
+    <div class="comparison-section">
+      <h4>Federal vs Provincial Indicators</h4>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h5>Federal Level Indicators</h5>
+          <ul>
+            <li>Gross Domestic Product (GDP)</li>
+            <li>Gross National Product (GNP)</li>
+            <li>Per capita income (Per capita GNI)</li>
+            <li>Rate of inflation</li>
+            <li>Trade Balance</li>
+            <li>Public Debt</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <h5>Provincial Level Indicators</h5>
+          <ul>
+            <li>Size of province-level GDP</li>
+            <li>Growth rate of GDP by province</li>
+            <li>Per-capita income by province</li>
+            <li>Unemployment rate by province</li>
+            <li>Province-wise budget expenditure</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h4>Key Federal Indicators</h4>
+    <div class="indicators-grid">
+      <div class="indicator-card">
+        <div class="indicator-number">1</div>
+        <div class="indicator-content">
+          <strong>Gross Domestic Product (GDP)</strong>
+          <p>Total value of goods and services: ~$36 billion</p>
+        </div>
+      </div>
+      
+      <div class="indicator-card">
+        <div class="indicator-number">2</div>
+        <div class="indicator-content">
+          <strong>Gross National Product (GNP)</strong>
+          <p>GDP plus net income from abroad including remittances</p>
+        </div>
+      </div>
+      
+      <div class="indicator-card">
+        <div class="indicator-number">3</div>
+        <div class="indicator-content">
+          <strong>Per capita income</strong>
+          <p>Average income: $1,190 per person annually</p>
+        </div>
+      </div>
+      
+      <div class="indicator-card">
+        <div class="indicator-number">4</div>
+        <div class="indicator-content">
+          <strong>Rate of inflation</strong>
+          <p>Average 6% with periodic fluctuations</p>
+        </div>
+      </div>
+      
+      <div class="indicator-card">
+        <div class="indicator-number">5</div>
+        <div class="indicator-content">
+          <strong>Trade Balance</strong>
+          <p>Consistently negative with high import dependency</p>
+        </div>
+      </div>
+      
+      <div class="indicator-card">
+        <div class="indicator-number">6</div>
+        <div class="indicator-content">
+          <strong>Public Debt</strong>
+          <p>Approximately 40% of GDP and increasing</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Provincial Economic Analysis</h3>
+    <div class="definition-box">
+      <p><strong>Provincial Economic Analysis</strong> since the adoption of federalism in 2015 has become crucial for understanding regional disparities and planning decentralized development across Nepal's seven provinces.</p>
+    </div>
+
+    <h4>Provincial Development Process</h4>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <h5>Bagmati Province</h5>
+        </div>
+        <div class="step-content">
+          <p><strong>Leading Economic Contributor (34.5% GDP share)</strong></p>
+          <ul>
+            <li>Highest per capita income: $1,850</li>
+            <li>Services, trade and industry based economy</li>
+            <li>Includes Kathmandu valley urban center</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <h5>Province 2 (Madhesh)</h5>
+        </div>
+        <div class="step-content">
+          <p><strong>Agricultural Heartland (17.8% GDP share)</strong></p>
+          <ul>
+            <li>Per capita income: $980</li>
+            <li>Agriculture and manufacturing focus</li>
+            <li>High population density</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <h5>Province 1 (Koshi)</h5>
+        </div>
+        <div class="step-content">
+          <p><strong>Diverse Economy (16.2% GDP share)</strong></p>
+          <ul>
+            <li>Per capita income: $1,050</li>
+            <li>Agriculture, tourism and trade activities</li>
+            <li>Strategic border location</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-number">4</div>
+          <h5>Less Developed Provinces</h5>
+        </div>
+        <div class="step-content">
+          <p><strong>Karnali & Sudurpashchim (9.5% combined GDP)</strong></p>
+          <ul>
+            <li>Lowest per capita income: $780-$810</li>
+            <li>Agriculture and remittance dependent</li>
+            <li>Limited infrastructure and access</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Economic Transformation Framework</h3>
+    <div class="definition-box">
+      <p><strong>Economic Transformation</strong> involves shifting Nepal from a traditional agrarian economy to a modern, diversified economic structure through strategic investments and policy reforms across key sectors.</p>
+    </div>
+
+    <div class="capital-formation-diagram">
+      <h4>Economic Development Pathway</h4>
+      <div class="diagram-container">
+        <div class="cycle-step">
+          <div class="cycle-icon">🌾</div>
+          <div class="cycle-text">Agrarian Base</div>
+        </div>
+        <div class="cycle-arrow">→</div>
+        <div class="cycle-step">
+          <div class="cycle-icon">⚡</div>
+          <div class="cycle-text">Energy Development</div>
+        </div>
+        <div class="cycle-arrow">→</div>
+        <div class="cycle-step">
+          <div class="cycle-icon">🏭</div>
+          <div class="cycle-text">Industrialization</div>
+        </div>
+        <div class="cycle-arrow">→</div>
+        <div class="cycle-step">
+          <div class="cycle-icon">💼</div>
+          <div class="cycle-text">Service Economy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="importance-section">
+      <h4>Strategic Development Priorities</h4>
+      <div class="importance-points">
+        <div class="importance-item">
+          <strong>Hydropower Development</strong>
+          <p>Harnessing 43,000 MW hydropower potential</p>
+        </div>
+        <div class="importance-item">
+          <strong>Tourism Expansion</strong>
+          <p>Leveraging natural and cultural heritage</p>
+        </div>
+        <div class="importance-item">
+          <strong>Infrastructure Modernization</strong>
+          <p>Transport, energy and digital connectivity</p>
+        </div>
+        <div class="importance-item">
+          <strong>Agricultural Modernization</strong>
+          <p>Productivity enhancement and commercialization</p>
+        </div>
+        <div class="importance-item">
+          <strong>Human Capital Development</strong>
+          <p>Education, health and skills development</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="definition-box" style="background: #e6f7ff; border-left: 4px solid #1890ff;">
+      <p><strong>Future Outlook:</strong> With successful implementation of federalism, strategic investments in infrastructure and productive sectors, and effective governance, Nepal has the potential to achieve accelerated economic growth and sustainable development in the coming decades, transforming from a least developed country to a developing nation.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+.notes-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.note-text {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.note-text h2 {
+  color: #4299e1;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid #4299e1;
+  padding-bottom: 0.5rem;
+}
+
+.note-text h3 {
+  color: #4299e1;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #4299e1;
+  padding-left: 1rem;
+}
+
+.note-text h4 {
+  color: #2d3748;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.note-text h5 {
+  color: #4a5568;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+/* Definition Box */
+.definition-box {
+  background: #e6fffa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border-left: 4px solid #38b2ac;
+}
+
+.modern-concept {
+  background: #f0fff4;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  border-left: 3px solid #48bb78;
+}
+
+.modern-concept strong {
+  color: #2d3748;
+}
+
+/* Comparison Section */
+.comparison-section {
+  margin: 2rem 0;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.comparison-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.comparison-card h5 {
+  text-align: center;
+  color: #4299e1;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+.comparison-card ul {
+  margin-bottom: 0;
+}
+
+.comparison-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+/* Indicators */
+.indicators-intro {
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.indicators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.indicator-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.indicator-card:hover {
+  border-color: #4299e1;
+  transform: translateY(-2px);
+}
+
+.indicator-number {
+  background: #4299e1;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.indicator-content strong {
+  color: #2d3748;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.indicator-content p {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.hdi-components {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.hdi-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.hdi-marker {
+  background: #48bb78;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Characteristics Grid */
+.characteristics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.characteristic-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #fff3e0;
+  border-radius: 8px;
+  border: 1px solid #fed7d7;
+  transition: all 0.3s ease;
+}
+
+.characteristic-card:hover {
+  border-color: #ed8936;
+  transform: translateY(-2px);
+}
+
+.char-number {
+  background: #ed8936;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.char-content strong {
+  color: #2d3748;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.char-content p {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Capital Senses */
+.capital-senses {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.sense-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.sense-item strong {
+  color: #4299e1;
+}
+
+/* Process Steps */
+.process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.process-step {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.process-step:hover {
+  border-color: #4299e1;
+  transform: translateX(5px);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.step-number {
+  background: #4299e1;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.step-header h5 {
+  margin: 0;
+  color: #2d3748;
+}
+
+.step-content p {
+  color: #4a5568;
+  margin-bottom: 0.8rem;
+}
+
+.step-content ul {
+  margin-bottom: 0;
+}
+
+.step-content li {
+  margin-bottom: 0.3rem;
+}
+
+/* Capital Formation Diagram */
+.capital-formation-diagram {
+  background: #f0fff4;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  border: 1px solid #c6f6d5;
+  text-align: center;
+}
+
+.diagram-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.cycle-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #48bb78;
+  min-width: 120px;
+}
+
+.cycle-icon {
+  font-size: 2rem;
+}
+
+.cycle-text {
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.cycle-arrow {
+  font-size: 1.5rem;
+  color: #4299e1;
+  font-weight: bold;
+}
+
+/* Importance Section */
+.importance-section {
+  margin: 2rem 0;
+}
+
+.importance-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.importance-item {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.importance-item strong {
+  color: #4299e1;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.importance-item p {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .comparison-grid,
+  .indicators-grid,
+  .characteristics-grid,
+  .importance-points {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .notes-content {
+    padding: 1rem;
+  }
+  
+  .diagram-container {
+    flex-direction: column;
+  }
+  
+  .cycle-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .indicator-card,
+  .characteristic-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+  
+  .step-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .hdi-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.3rem;
+  }
+}
+</style>
+<!-- Chapter Body End -->
+<!--Chapter End-->
+
+    <div class="notes-actions">
+      <div class="nav-buttons">
+        <a href="G11-9.html" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Previous Page
+        </a>
+        <a href="G11-11.html" class="btn btn-primary">
+          Next Page <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      
+      <a href="G1-ALL.html" class="btn btn-outline">
+        <i class="fas fa-list"></i> Back to Chapters
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+ <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>The Tuition Class</span>
+          </div>
+          <p>Your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@TheTuitionClass"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Courses</h3>
+          <ul>
+            <li><a href="G1-ALL.html">Grade 11</a></li>
+            <li><a href="grade12.html">Grade 12</a></li>
+            <li><a href="bbs1.html">BBS 1st Year</a></li>
+            <li><a href="bbs2.html">BBS 2nd Year</a></li>
+            <li><a href="mbs1.html">MBS 1st Sem</a></li>
+            <li><a href="mbs2.html">MBS 2nd Sem</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Pokhara, Nepal</li>
+            <li><i class="fas fa-phone"></i> +977 9840565144</li>
+            <li><i class="fas fa-envelope"></i> thetuitionclass01@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 The Tuition Class. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      
+      menuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+      });
+      
+      // Close menu when clicking on a link
+      const navItems = document.querySelectorAll('#nav-links a');
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+        });
+      });
+      
+      // Highlight functionality
+      const highlightBtn = document.getElementById('highlight-yellow');
+      let isHighlighting = false;
+      
+      highlightBtn.addEventListener('click', function() {
+        isHighlighting = !isHighlighting;
+        
+        if (isHighlighting) {
+          highlightBtn.style.backgroundColor = '#fff9c4';
+          document.body.style.cursor = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23FFD700\' d=\'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z\'/%3E%3C/svg%3E") 0 16, auto';
+        } else {
+          highlightBtn.style.backgroundColor = '';
+          document.body.style.cursor = 'default';
+        }
+      });
+      
+      // Text selection highlighting
+      document.addEventListener('mouseup', function() {
+        if (isHighlighting) {
+          const selection = window.getSelection();
+          if (selection.toString().length > 0) {
+            const range = selection.getRangeAt(0);
+            const highlight = document.createElement('span');
+            highlight.className = 'highlight-yellow';
+            highlight.textContent = selection.toString();
+            range.deleteContents();
+            range.insertNode(highlight);
+            selection.removeAllRanges();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

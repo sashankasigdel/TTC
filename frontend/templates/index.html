@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Tuition Class - Online Learning Platform</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <span>The Tuition Class</span>
+      </div>
+      <nav id="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="#courses">Courses</a>
+        <a href="#news">News</a>
+        <a href="#">Tools</a>
+        <a href="#">About Us</a>
+        <a href="/login/" class="btn-login">Login</a>
+      </nav>
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <!-- When logged in -->
+{% if user.is_authenticated %}
+<script>
+  // Hide login dropdown if user is logged in
+  document.addEventListener('DOMContentLoaded', function() {
+    var loginDropdown = document.getElementById('loginDropdown');
+    var loginBtn = document.getElementById('loginDropdownBtn');
+    if (loginDropdown && loginBtn) {
+      loginDropdown.style.display = 'none';
+      loginBtn.innerHTML = '<i class="fas fa-user"></i> {{ user.username }} <i class="fas fa-caret-down"></i>';
+      loginBtn.onclick = function() {
+        window.location.href = '/logout/';
+      };
+    }
+  });
+</script>
+{% endif %}
+      </nav>
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to The Tuition Class</h1>
+      <p>Learn anywhere, anytime — your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
+      <div class="hero-buttons">
+        <a href="#courses" class="btn btn-primary">Explore Courses</a>
+        <a href="#" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23f0f7ff'/%3E%3Ccircle cx='300' cy='200' r='150' fill='%234299e1' opacity='0.1'/%3E%3Cpath d='M150,150 Q300,100 450,150 L450,250 Q300,300 150,250 Z' fill='%234299e1' opacity='0.2'/%3E%3Ccircle cx='200' cy='180' r='40' fill='%234299e1' opacity='0.3'/%3E%3Ccircle cx='400' cy='220' r='40' fill='%234299e1' opacity='0.3'/%3E%3C/svg%3E" alt="Online Learning">
+    </div>
+  </section>
+
+  <!-- Courses Section -->
+  <section id="courses" class="courses">
+    <div class="container">
+      <h2 class="section-title">Our Courses</h2>
+      <p class="section-subtitle">Comprehensive learning materials for various academic levels</p>
+      
+      <div class="course-categories">
+        <div class="category">
+          <h3>+2 Level</h3>
+          <div class="course-boxes">
+            <div class="course-card">
+              <div class="course-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h4>Grade 11 Economics</h4>
+              <p>Comprehensive video lectures, notes, and summaries for NEB Grade 11 Economics.</p>
+              <a href="/g1-all" class="btn btn-outline">View Chapters</a>
+            </div>
+            <div class="course-card">
+              <div class="course-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <h4>Grade 12 Economics</h4>
+              <p>Complete syllabus coverage with solved questions and exam preparation materials.</p>
+              <a href="grade12.html" class="btn btn-outline">View Chapters</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="category">
+          <h3>Bachelor Level (BBS)</h3>
+          <div class="course-boxes">
+            <div class="course-card">
+              <div class="course-icon">
+                <i class="fas fa-book"></i>
+              </div>
+              <h4>BBS 1st Year</h4>
+              <p>Detailed explanation and solved questions for BBS 1st Year Economics syllabus.</p>
+              <a href="bbs1.html" class="btn btn-outline">View Notes</a>
+            </div>
+            <div class="course-card">
+              <div class="course-icon">
+                <i class="fas fa-book-open"></i>
+              </div>
+              <h4>BBS 2nd Year</h4>
+              <p>Advanced economic theories and practical applications with case studies.</p>
+              <a href="bbs2.html" class="btn btn-outline">View Notes</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="category">
+          <h3>Master Level (MBS)</h3>
+          <div class="course-boxes">
+            <div class="course-card">
+              <div class="course-icon">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <h4>MBS 1st Semester</h4>
+              <p>Advanced managerial economics concepts with real-world business applications.</p>
+              <a href="mbs1.html" class="btn btn-outline">View Materials</a>
+            </div>
+            <div class="course-card">
+              <div class="course-icon">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <h4>MBS 2nd Semester</h4>
+              <p>Specialized economic analysis techniques and research methodology.</p>
+              <a href="mbs2.html" class="btn btn-outline">View Materials</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Why Choose The Tuition Class?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <h3>Recorded Lectures</h3>
+          <p>Access high-quality video lectures anytime, anywhere at your own pace.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h3>Study Materials</h3>
+          <p>Comprehensive notes, summaries, and practice questions for every topic.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h3>Expert Teachers</h3>
+          <p>Learn from experienced educators with proven track records.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>Mobile Friendly</h3>
+          <p>Study on any device - desktop, tablet, or smartphone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section id="news" class="news">
+    <div class="container">
+      <h2 class="section-title">Latest News & Announcements</h2>
+      <p class="section-subtitle">Stay updated with the latest notices and announcements from The Tuition Class.</p>
+      
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-date">May 15, 2025</div>
+          <h3>New Grade 12 Economics Materials Added</h3>
+          <p>We've updated our Grade 12 Economics course with new video lectures and practice questions for the upcoming board exams.</p>
+          <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="news-card">
+          <div class="news-date">April 28, 2025</div>
+          <h3>Summer Enrollment Now Open</h3>
+          <p>Enroll in our summer courses for SEE, +2, and BBS students. Special discounts available for early registration.</p>
+          <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="news-card">
+          <div class="news-date">April 10, 2025</div>
+          <h3>MBS 1st Semester Course Launched</h3>
+          <p>We're excited to announce our new MBS 1st Semester course with comprehensive study materials and expert guidance.</p>
+          <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <a href="news.html" class="btn btn-primary">View All News</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about" class="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 class="section-title">About The Tuition Class</h2>
+          <p>
+            The Tuition Class is an online education platform dedicated to helping students prepare effectively for their exams. We provide recorded lessons, study materials, and expert guidance for SEE, +2, and BBS/MBS students.
+          </p>
+          <p>
+            Our mission is to make quality education accessible to all students, regardless of their location or economic background. With our comprehensive learning resources and flexible study options, students can learn at their own pace and achieve academic success.
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <h3>5000+</h3>
+              <p>Students Enrolled</p>
+            </div>
+            <div class="stat">
+              <h3>50+</h3>
+              <p>Expert Teachers</p>
+            </div>
+            <div class="stat">
+              <h3>100+</h3>
+              <p>Courses Available</p>
+            </div>
+          </div>
+          <a href="about.html" class="btn btn-primary">Learn More About Us</a>
+        </div>
+        <div class="about-image">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 400'%3E%3Crect width='500' height='400' fill='%23f8f9fa'/%3E%3Ccircle cx='250' cy='200' r='120' fill='%234299e1' opacity='0.1'/%3E%3Cpath d='M150,150 Q250,100 350,150 L350,250 Q250,300 150,250 Z' fill='%234299e1' opacity='0.2'/%3E%3Ccircle cx='200' cy='180' r='30' fill='%234299e1' opacity='0.3'/%3E%3Ccircle cx='300' cy='220' r='30' fill='%234299e1' opacity='0.3'/%3E%3C/svg%3E" alt="About Us">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>The Tuition Class</span>
+          </div>
+          <p>Your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
+          
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/index/">Home</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#news">News</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Courses</h3>
+          <ul>
+            <li><a href="/g1-all/">Grade 11</a></li>
+            <li><a href="grade12.html">Grade 12</a></li>
+            <li><a href="bbs1.html">BBS 1st Year</a></li>
+            <li><a href="bbs2.html">BBS 2nd Year</a></li>
+            <li><a href="mbs1.html">MBS 1st Sem</a></li>
+            <li><a href="mbs2.html">MBS 2nd Sem</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Pokhara, Nepal</li>
+            <li><i class="fas fa-phone"></i> +977 9745289791</li>
+            <li><i class="fas fa-envelope"></i> thetuitionclass01@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 The Tuition Class. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

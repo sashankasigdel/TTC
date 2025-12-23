@@ -1,0 +1,395 @@
+<!-- frontend/templates/login.html -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Login - The Tuition Class</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Login page specific styles */
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .login-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 450px;
+      overflow: hidden;
+      animation: slideUp 0.5s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    
+    .login-header h2 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    
+    .login-header p {
+      margin: 0.5rem 0 0 0;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+    
+    .login-body {
+      padding: 2.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+      font-size: 0.95rem;
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #667eea;
+      font-size: 1.1rem;
+    }
+    
+    .input-with-icon input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3.2rem;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .input-with-icon input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn-login-submit {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 1.2rem;
+      width: 100%;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 1rem;
+    }
+    
+    .btn-login-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .login-divider {
+      text-align: center;
+      margin: 2rem 0;
+      position: relative;
+    }
+    
+    .login-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e1e5e9;
+    }
+    
+    .login-divider span {
+      background: white;
+      padding: 0 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .btn-google {
+      background: white;
+      color: #333;
+      border: 2px solid #e1e5e9;
+      padding: 1rem;
+      width: 100%;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .btn-google:hover {
+      background: #f8f9fa;
+      border-color: #ddd;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .btn-google img {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .login-footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e1e5e9;
+    }
+    
+    .login-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s;
+    }
+    
+    .login-footer a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+    
+    .messages {
+      margin-bottom: 1.5rem;
+    }
+    
+    .alert {
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .alert-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+    
+    .alert-error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    
+    .alert i {
+      font-size: 1.2rem;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Responsive */
+    @media (max-width: 480px) {
+      .login-body {
+        padding: 2rem 1.5rem;
+      }
+      
+      .login-header {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar (same as index.html) -->
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <span>The Tuition Class</span>
+      </div>
+      <nav id="nav-links">
+        <a href="/">Home</a>
+        <a href="/#courses">Courses</a>
+        <a href="/#news">News</a>
+        <a href="#">Tools</a>
+        <a href="#">About Us</a>
+        
+  </header>
+
+  <!-- Login Main Content -->
+  <main class="login-main">
+    <div class="login-card">
+      <!-- Header -->
+      <div class="login-header">
+        <h2><i class="fas fa-sign-in-alt"></i> User Login</h2>
+        <p>Sign in to access your study materials</p>
+      </div>
+      
+      <!-- Body -->
+      <div class="login-body">
+        <!-- Messages -->
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {% if message.tags == 'success' %}
+            <i class="fas fa-check-circle"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+            <span>{{ message }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Django Login Form -->
+        <form method="POST">
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label for="username">Username or Email</label>
+            <div class="input-with-icon">
+              <i class="fas fa-user"></i>
+              <input type="text" id="username" name="username" 
+                     placeholder="Enter your username or email" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-with-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" name="password" 
+                     placeholder="Enter your password" required>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-login-submit">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+          </button>
+        </form>
+        
+        <!-- Divider -->
+        <div class="login-divider">
+          <span>Or continue with</span>
+        </div>
+        
+        <!-- Google Login Button -->
+        <button class="btn-google" onclick="googleLogin()">
+          <img src="https://www.google.com/favicon.ico" alt="Google">
+          Sign in with Google
+        </button>
+        
+        <!-- Footer -->
+        <div class="login-footer">
+          <a href="/">
+            <i class="fas fa-arrow-left"></i> Back to Home
+          </a>
+          <span style="margin: 0 10px; color: #999;">•</span>
+          <a href="#">Forgot Password?</a>
+          <span style="margin: 0 10px; color: #999;">•</span>
+          <a href="#">Need Help?</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>The Tuition Class</span>
+          </div>
+          <p>Your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
+        </div>
+        <!-- ... rest of your footer ... -->
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 The Tuition Class. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/script.js' %}"></script>
+  <script>
+    // Google login function (placeholder - you'll need to implement OAuth)
+    function googleLogin() {
+      // For now, redirect to a placeholder
+      alert('Google login will be implemented soon! For now, please use the form above.');
+      // Uncomment and implement when you set up Google OAuth:
+      // window.location.href = '/accounts/google/login/';
+    }
+    
+    // Mobile menu toggle for login page
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('active');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

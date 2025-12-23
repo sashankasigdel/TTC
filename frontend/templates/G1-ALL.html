@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 11 Chapters - The Tuition Class</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/g1-styles.css' %}">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <span>The Tuition Class</span>
+      </div>
+      <nav>
+        <a href="/index/">Home</a>
+        <a href="/#courses/">Courses</a>
+        <a href="#">News</a>
+        <a href="#">Tools</a>
+        <a href="#">About Us</a>
+        <a href="#" class="btn-login">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Grade 11 Economics</h1>
+      <p class="page-subtitle">Complete course materials for Grade 11 Economics. Click on any chapter to start learning.</p>
+    </div>
+
+    <!-- Quick Actions 
+    <div class="quick-actions">
+      <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">Quick Access</h2>
+      <div class="actions-grid">
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <h3>All Chapters PDF</h3>
+          <p>Download complete course PDF</p>
+          <a href="pdf-viewer.html" class="btn btn-primary btn-small">
+            <i class="fas fa-download"></i> Download All
+          </a>
+        </div>
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-video"></i>
+          </div>
+          <h3>Video Lectures</h3>
+          <p>Watch chapter-wise videos</p>
+          <a href="videos.html" class="btn btn-secondary btn-small">
+            <i class="fas fa-play"></i> Watch Videos
+          </a>
+        </div>
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h3>Practice Tests</h3>
+          <p>Test your knowledge</p>
+          <a href="tests.html" class="btn btn-outline btn-small">
+            <i class="fas fa-pencil-alt"></i> Take Tests
+          </a>
+        </div>
+      </div>
+    </div>
+-->
+    <!-- Chapters Grid -->
+    <div class="chapters-grid">
+      <!-- Chapter 1 -->
+      <div class="chapter-card">
+        <div class="chapter-number">1</div>
+        <h3 class="chapter-title">Chapter 1 </h3>
+        <p class="chapter-description">Basic Concept of Economics and Allocation of Resources</p>
+        <div class="chapter-actions">
+          <a href="/g11-1/" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="#" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+
+      <!-- Chapter 2 -->
+      <div class="chapter-card">
+        <div class="chapter-number">2</div>
+        <h3 class="chapter-title">Chapter 2 </h3>
+        <p class="chapter-description">Demand Supply and Market Equilibrium </p>
+        <div class="chapter-actions">
+          <a href="G11-2.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=2" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+           
+          </a>
+        </div>
+      </div>
+
+      <!-- Chapter 3 -->
+      <div class="chapter-card">
+        <div class="chapter-number">3</div>
+        <h3 class="chapter-title">Chapter 3</h3>
+        <p class="chapter-description">Elasticity of Demand and Supply</p>
+        <div class="chapter-actions">
+          <a href="G11-3.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=3" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+
+      <!-- Chapter 4 -->
+      <div class="chapter-card">
+        <div class="chapter-number">4</div>
+        <h3 class="chapter-title">Chapter 4 </h3>
+        <p class="chapter-description">Consumer Behavior</p>
+        <div class="chapter-actions">
+          <a href="G11-4.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=4" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+
+      <!-- Chapter 5 -->
+      <div class="chapter-card">
+        <div class="chapter-number">5</div>
+        <h3 class="chapter-title">Chapter 5</h3>
+        <p class="chapter-description"> Theory of Production.</p>
+        <div class="chapter-actions">
+          <a href="G11-5.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=5" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+        </div>
+      </div>
+
+      <!-- Chapter 6 -->
+      <div class="chapter-card">
+        <div class="chapter-number">6</div>
+        <h3 class="chapter-title">Chapter 6 </h3>
+        <p class="chapter-description">Introduction to Macroeconomics</p>
+        <div class="chapter-actions">
+          <a href="G11-6.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=6" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+        </div>
+      </div>
+
+      <!-- Chapter 7 -->
+      <div class="chapter-card">
+        <div class="chapter-number">7</div>
+        <h3 class="chapter-title">Chapter 7</h3>
+        <p class="chapter-description">National Income Accounting</p>
+        <div class="chapter-actions">
+          <a href="G11-7.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=7" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+        </div>
+      </div>
+
+      <!-- Chapter 8 -->
+      <div class="chapter-card">
+        <div class="chapter-number">8</div>
+        <h3 class="chapter-title">Chapter 8</h3>
+        <p class="chapter-description">Money and Inflation</p>
+        <div class="chapter-actions">
+          <a href="G11-8.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=8" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+      
+        </div>
+      </div>
+
+      <!-- Add more chapters following the same pattern -->
+      <!-- Chapters 9-17 would follow the same structure -->
+
+      <!-- Chapter 9 -->
+      <div class="chapter-card">
+        <div class="chapter-number">9</div>
+        <h3 class="chapter-title">Chapter 9</h3>
+        <p class="chapter-description"> Economic Development Growth and Capital Formation</p>
+        <div class="chapter-actions">
+          <a href="G11-9.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+   
+      <!-- Chapter 10 -->
+      <div class="chapter-card">
+        <div class="chapter-number">10</div>
+        <h3 class="chapter-title">Chapter 10</h3>
+        <p class="chapter-description"> Nepalese Economy </p>
+        <div class="chapter-actions">
+          <a href="G11-10.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+      <!-- Chapter 11 -->
+      <div class="chapter-card">
+        <div class="chapter-number">11</div>
+        <h3 class="chapter-title">Chapter 11</h3>
+        <p class="chapter-description">Natural Resources of Nepal </p>
+        <div class="chapter-actions">
+          <a href="G11-11.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+       <!-- Chapter 12 -->
+      <div class="chapter-card">
+        <div class="chapter-number">12</div>
+        <h3 class="chapter-title">Chapter 12</h3>
+        <p class="chapter-description">Agriculture</p>
+        <div class="chapter-actions">
+          <a href="G11-12.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+           <!-- Chapter 13 -->
+      <div class="chapter-card">
+        <div class="chapter-number">13</div>
+        <h3 class="chapter-title">Chapter 13</h3>
+        <p class="chapter-description">Manufacturing and Tourism Industries in Nepal  </p>
+        <div class="chapter-actions">
+          <a href="G11-13.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+          </a>
+        </div>
+      </div>
+            <!-- Chapter 14 -->
+      <div class="chapter-card">
+        <div class="chapter-number">14</div>
+        <h3 class="chapter-title">Chapter 14</h3>
+        <p class="chapter-description">Transportation and Communication </p>
+        <div class="chapter-actions">
+          <a href="G11-14.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+        
+        </div>
+      </div>
+            <!-- Chapter 15 -->
+      <div class="chapter-card">
+        <div class="chapter-number">15</div>
+        <h3 class="chapter-title">Chapter 15</h3>
+        <p class="chapter-description">Uses or Importance of Mathematics in Economics </p>
+        <div class="chapter-actions">
+          <a href="G11-15.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+        </div>
+      </div>
+                 <!-- Chapter 16 -->
+      <div class="chapter-card">
+        <div class="chapter-number">16</div>
+        <h3 class="chapter-title">Chapter 16</h3>
+        <p class="chapter-description">Equation of A Straight Line</p>
+        <div class="chapter-actions">
+          <a href="G11-16.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=9" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+        </div>
+      </div>
+      <!-- Chapter 17 -->
+      <div class="chapter-card">
+        <div class="chapter-number">17</div>
+        <h3 class="chapter-title">Chapter 17 </h3>
+        <p class="chapter-description">Nepalese Economy</p>
+        <div class="chapter-actions">
+          <a href="G11-17.html" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Study Chapter
+          </a>
+          <a href="pdf-viewer.html?chapter=10" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> View PDF
+          </a>
+          
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Load More Button 
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="#" class="btn btn-outline">
+        <i class="fas fa-arrow-down"></i> Load More Chapters
+      </a>
+    </div>
+  </div>
+-->
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <div class="logo">
+          <i class="fas fa-graduation-cap"></i>
+          <span>The Tuition Class</span>
+        </div>
+        <p>Your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
+        
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/index/">Home</a></li>
+          <li><a href="/index/">Courses</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Tools</a></li>
+          <li><a href="#">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Courses</h3>
+        <ul>
+          <li><a href="/g1-all/">Grade 11</a></li>
+          <li><a href="grade12.html">Grade 12</a></li>
+          <li><a href="bbs1.html">BBS 1st Year</a></li>
+          <li><a href="bbs2.html">BBS 2nd Year</a></li>
+          <li><a href="mbs1.html">MBS 1st Sem</a></li>
+          <li><a href="mbs2.html">MBS 2nd Sem</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> Pokhara, Nepal</li>
+          <li><i class="fas fa-phone"></i> +977 9745289791</li>
+          <li><i class="fas fa-envelope"></i> thetuitionclass01@gmail.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 The Tuition Class. All Rights Reserved.</p>
+    </div>
+  </footer>
+<script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/g1-scripts.js' %}"></script>
+  
+</body>
+</html>
