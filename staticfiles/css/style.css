@@ -146,6 +146,7 @@ p {
   text-decoration: none;
   font-weight: 500;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .btn-login:hover {
@@ -171,25 +172,6 @@ header {
   margin: 0 auto;
 }
 
-.navbar,
-nav {
-  overflow: visible; /* allow dropdown to appear outside the nav */
-  position: relative; /* ensure absolute positioning inside works */
-}
-
-.login-container .dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;  /* dropdown starts right below the login button */
-  left: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  min-width: 150px;
-  z-index: 2000;  /* above everything */
-}
-
-
 .logo {
   display: flex;
   align-items: center;
@@ -208,7 +190,8 @@ nav {
   align-items: center;
 }
 
-nav a {
+/* Only top-level nav links get spacing */
+nav > a {
   margin-left: 2rem;
   text-decoration: none;
   color: var(--dark-color);
@@ -216,6 +199,7 @@ nav a {
   transition: var(--transition);
   position: relative;
 }
+
 
 nav a:hover {
   color: var(--primary-color);
@@ -690,4 +674,81 @@ footer {
   h2 {
     font-size: 1.7rem;
   }
+}
+
+/* User menu styles */
+.user-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: white;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  z-index: 1000;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.user-menu:hover .user-dropdown {
+  display: block;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-dropdown a:last-child {
+  border-bottom: none;
+}
+
+.user-dropdown a:hover {
+  background: #f5f5f5;
+}
+
+.user-dropdown i {
+  width: 20px;
+  text-align: center;
+}
+
+/* Add to your style.css */
+#nav-links a, 
+#nav-links .btn-login,
+#nav-links .user-menu > a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#nav-links a:hover,
+#nav-links .btn-login:hover,
+#nav-links .user-menu > a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+}
+
+/* Add spacing between all nav items */
+#nav-links > * {
+    margin: 0 2px;
 }

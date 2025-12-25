@@ -3,6 +3,54 @@
 {% load static %}
 <html lang="en">
 <head>
+ <style>
+  /* Fix ALL nav buttons */
+  #nav-links a:not(.btn-login):not(.user-menu > a) {
+    color: #2d3748 !important;  /* Dark color for Home, Courses, etc. */
+    text-decoration: none !important;
+    padding: 8px 15px !important;
+    margin: 0 5px !important;
+    border-radius: 5px !important;
+    transition: all 0.3s !important;
+  }
+  
+  #nav-links a:not(.btn-login):not(.user-menu > a):hover {
+    background-color: rgba(66, 153, 225, 0.1) !important;
+    color: #4299e1 !important;
+  }
+  
+  #nav-links a:not(.btn-login):not(.user-menu > a).active {
+    background-color: rgba(66, 153, 225, 0.2) !important;
+    color: #4299e1 !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Fix login button */
+  .btn-login {
+    color: #4299e1 !important;
+    border: 2px solid #4299e1 !important;
+    background: transparent !important;
+    margin-left: 10px !important;
+  }
+  
+  .btn-login:hover {
+    background-color: #4299e1 !important;
+    color: white !important;
+  }
+  
+  /* Fix user menu button */
+  .user-menu > a {
+    color: #4299e1 !important;
+    border: 2px solid #4299e1 !important;
+    background: transparent !important;
+    margin-left: 10px !important;
+  }
+  
+  .user-menu > a:hover {
+    background-color: #4299e1 !important;
+    color: white !important;
+  }
+</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}The Tuition Class - Online Learning Platform{% endblock %}</title>
@@ -72,7 +120,7 @@
           <h3>Quick Links</h3>
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="#courses">Courses</a></li>
+            <li><a href="/">Courses</a></li>
             <li><a href="#news">News</a></li>
             <li><a href="#">Tools</a></li>
             <li><a href="#">About Us</a></li>

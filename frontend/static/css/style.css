@@ -722,3 +722,33 @@ footer {
   width: 20px;
   text-align: center;
 }
+
+/* Add to your style.css */
+#nav-links a, 
+#nav-links .btn-login,
+#nav-links .user-menu > a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#nav-links a:hover,
+#nav-links .btn-login:hover,
+#nav-links .user-menu > a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+}
+
+/* Add spacing between all nav items */
+#nav-links > * {
+    margin: 0 2px;
+}
