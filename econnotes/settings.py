@@ -4,7 +4,20 @@ Django settings for econnotes project.
 
 from pathlib import Path
 import os
+# settings.py - REAL EMAIL SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
+# USE YOUR REAL GMAIL CREDENTIALS
+EMAIL_HOST_USER = 'sashankadada36@gmail.com'  # Your actual Gmail
+EMAIL_HOST_PASSWORD = 'ijza lwtz xzoc zukg'  # Your actual Gmail password
+
+# Sender info
+DEFAULT_FROM_EMAIL = 'The Tuition Class <thetuitionclass01@gmail.com>'
+SERVER_EMAIL = 'thetuitionclass01@gmail.com'
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,6 +31,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -105,3 +119,66 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # For production, you'll need this later
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# settings.py - Add to the bottom
+
+
+# Jazzmin Settings
+JAZZMIN_SETTINGS = {
+    # Title on the brand (19 chars max)
+    "site_brand": "The Tuition Class Admin",
+    
+    # Logo to use for your site, must be present in static files
+    "site_logo": "books.ico",
+    
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to The Tuition Class Admin Panel",
+    
+    # Copyright on the footer
+    "copyright": "The Tuition Class",
+    
+    # The model admin to search from the search bar
+    "search_model": "auth.User",
+    
+    # Field name on user model that contains avatar image
+    "user_avatar": None,
+    
+    # Top Menu Links
+    "topmenu_links": [
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Website", "url": "/", "new_window": True},
+        {"model": "auth.User"},
+        {"app": "notes"},
+    ],
+    
+    # Custom icons for side menu apps/models
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "notes": "fas fa-sticky-note",
+    },
+    
+    # Icons that are used when one is not manually specified
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    
+    # UI Tweaks
+    "show_ui_builder": True,  # Allows customizing the UI
+    
+    # Change default theme
+    "theme": "darkly",  # You can try: "darkly", "flatly", "slate", "solar", "superhero"
+    
+    # Custom links on the side menu
+    "custom_links": {
+        "notes": [{
+            "name": "View Website", 
+            "url": "/", 
+            "icon": "fas fa-external-link-alt",
+            "permissions": ["auth.view_user"]
+        }]
+    },
+}
+
+
