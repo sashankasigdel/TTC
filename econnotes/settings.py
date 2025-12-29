@@ -143,6 +143,16 @@ JAZZMIN_SETTINGS = {
     # Field name on user model that contains avatar image
     "user_avatar": None,
     
+'custom_links': {
+        'notes': [{
+            'name': 'View Website',
+            'url': '/',
+            'icon': 'fas fa-external-link-alt',
+            'permissions': ['notes.view_course']
+        }]
+    },
+
+
     # Top Menu Links
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)

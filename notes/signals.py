@@ -16,4 +16,4 @@ def save_user_profile(sender, instance, **kwargs):
     """Save UserProfile when User is saved"""
     if hasattr(instance, 'profile'):
         instance.profile.save()
-        print(f"✓ Saved profile for user: {instance.username}")
+        print(f"✓ Saved profile for user: {instance.username}") 

@@ -1,10 +1,10 @@
-# notes/urls.py
+# notes/urls.py - EVEN SIMPLER
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Home
-    path('', views.universal_page, {'page_name': 'index'}, name='home'),
+    # Home - using universal_page with explicit 'index'
+    path('', views.universal_page, name='home'),
     
     # Auth
     path('register/', views.register_view, name='register'),
@@ -16,6 +16,16 @@ urlpatterns = [
     path('verify-otp/', views.verify_otp_view, name='verify_otp'),
     path('resend-otp/', views.resend_otp_view, name='resend_otp'),
     
-    # Universal pages
+# ============================================================================
+    # DYNAMIC COURSE URLs
+    # ============================================================================
+    path('courses/', views.courses_page, name='courses_page'),
+    path('courses/<slug:course_slug>/', views.course_detail, name='course_detail'),
+    path('courses/<slug:course_slug>/<slug:subject_slug>/', views.subject_detail, name='subject_detail'),
+    path('courses/<slug:course_slug>/<slug:subject_slug>/<slug:chapter_slug>/', 
+         views.chapter_detail, name='chapter_detail'),
+
+
+    # Universal pages for everything else
     path('<str:page_name>/', views.universal_page, name='universal_page'),
 ]

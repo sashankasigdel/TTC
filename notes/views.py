@@ -8,11 +8,15 @@ from django.contrib.auth.models import User
 from .email_utils import send_otp_email  # ADD THIS IMPORT
 from django.contrib.auth.decorators import user_passes_test
 import logging
+from django.shortcuts import render, get_object_or_404
+from .models import Course, Subject, Chapter
+from django.core.paginator import Paginator
 
 logger = logging.getLogger(__name__)
 
 # ========== EXISTING FUNCTIONS (KEEP THESE) ==========
-def universal_page(request, page_name=None):
+def universal_page(request, page_name='index'):
+    """Handle all pages including home"""
     if not page_name:
         page_name = 'index'
     
@@ -221,3 +225,76 @@ def email_verified_required(function=None):
 @email_verified_required
 def protected_page(request):
     return render(request, 'protected.html')
+
+# ============================================================================
+# DYNAMIC COURSE VIEWS
+# ============================================================================
+
+# In views.py, update courses_page function
+def courses_page(request):
+    """Display all courses grouped by level (original floating card design)"""
+    # Get all active courses
+    all_courses = Course.objects.filter(is_active=True).order_by('display_order', 'title')
+    
+    context = {
+        'courses': all_courses,
+        'page_title': 'All Courses'
+    }
+    return render(request, 'courses/all_courses.html', context)
+
+def course_detail(request, course_slug):
+    """Display subjects for a specific course"""
+    course = get_object_or_404(Course, slug=course_slug, is_active=True)
+    subjects = course.subjects.filter(is_active=True).order_by('display_order', 'title')
+    
+    context = {
+        'course': course,
+        'subjects': subjects,
+        'page_title': course.title
+    }
+    return render(request, 'courses/course_detail.html', context)
+
+def subject_detail(request, course_slug, subject_slug):
+    """Display chapters for a specific subject"""
+    course = get_object_or_404(Course, slug=course_slug, is_active=True)
+    subject = get_object_or_404(Subject, slug=subject_slug, course=course, is_active=True)
+    chapters = subject.chapters.filter(is_active=True).order_by('display_order', 'title')
+    
+    # Optional: Add pagination for chapters
+    paginator = Paginator(chapters, 10)  # Show 10 chapters per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'course': course,
+        'subject': subject,
+        'chapters': page_obj,  # Use page_obj instead of chapters
+        'page_title': f"{subject.title} - {course.title}"
+    }
+    return render(request, 'courses/subject_detail.html', context)
+
+def chapter_detail(request, course_slug, subject_slug, chapter_slug):
+    """Display a single chapter"""
+    course = get_object_or_404(Course, slug=course_slug, is_active=True)
+    subject = get_object_or_404(Subject, slug=subject_slug, course=course, is_active=True)
+    chapter = get_object_or_404(Chapter, slug=chapter_slug, subject=subject, is_active=True)
+    
+    context = {
+        'course': course,
+        'subject': subject,
+        'chapter': chapter,
+        'page_title': f"{chapter.title} - {subject.title}"
+    }
+    return render(request, 'courses/chapter_detail.html', context)
+
+# In views.py, update your home function:
+def home(request):
+    """Home page with featured courses"""
+    # Get first 6 active courses for featured section
+    featured_courses = Course.objects.filter(is_active=True).order_by('display_order', 'title')[:6]
+    
+    context = {
+        'featured_courses': featured_courses,
+        'page_title': 'The Tuition Class - Home'
+    }
+    return render(request, 'index.html', context)

@@ -1,0 +1,213 @@
+<!-- templates/courses/subject_detail.html - YOUR ORIGINAL MULTI-VIEW -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">{{ subject.title }}</h1>
+        <p class="page-subtitle">{{ subject.description }}</p>
+    </div>
+
+    <!-- Chapters Grid (Your Original Multi-View Design) -->
+    <div class="chapters-grid">
+        {% for chapter in chapters %}
+        <div class="chapter-card">
+            <div class="chapter-number">{{ forloop.counter }}</div>
+            <h3 class="chapter-title">{{ chapter.title }}</h3>
+            <p class="chapter-description">{{ chapter.content|truncatewords:15 }}</p>
+            <div class="chapter-actions">
+                <a href="{% url 'chapter_detail' course.slug subject.slug chapter.slug %}" class="btn btn-primary">
+                    <i class="fas fa-book-open"></i> Study Chapter
+                </a>
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-file-pdf"></i> View PDF
+                </a>
+                <a href="#" class="btn btn-accent">
+                    <i class="fas fa-video"></i> Watch Video
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-chapters">
+            <i class="fas fa-book fa-4x"></i>
+            <h3>No Chapters Available Yet</h3>
+            <p>Chapters will be added to this subject soon.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Navigation -->
+    <div class="subject-navigation mt-5">
+        <a href="{% url 'course_detail' course.slug %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Subjects
+        </a>
+        <a href="{% url 'courses_page' %}" class="btn btn-outline">
+            <i class="fas fa-list"></i> All Courses
+        </a>
+    </div>
+</div>
+
+<!-- Your Original CSS for Multi-View Chapters -->
+<style>
+    /* Page Header */
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+    
+    .page-subtitle {
+        color: var(--secondary-color);
+        max-width: 700px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+    }
+    
+    /* Chapters Grid - Your Original Design */
+    .chapters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .chapter-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .chapter-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .chapter-number {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
+    }
+    
+    .chapter-title {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        font-size: 1.3rem;
+    }
+    
+    .chapter-description {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        min-height: 60px;
+        line-height: 1.6;
+    }
+    
+    .chapter-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .chapter-actions .btn {
+        flex: 1;
+        min-width: 120px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .btn-accent {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+    }
+    
+    .btn-accent:hover {
+        background-color: #dd6b20;
+        color: white;
+    }
+    
+    .empty-chapters {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 15px;
+    }
+    
+    .empty-chapters i {
+        color: var(--gray-light);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-chapters h3 {
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-chapters p {
+        color: var(--secondary-color);
+    }
+    
+    .subject-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--gray-light);
+    }
+    
+    @media (max-width: 768px) {
+        .chapters-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .chapter-actions {
+            flex-direction: column;
+        }
+        
+        .chapter-actions .btn {
+            width: 100%;
+        }
+        
+        .subject-navigation {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .subject-navigation .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}

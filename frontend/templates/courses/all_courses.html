@@ -1,0 +1,231 @@
+<!-- templates/courses/all_courses.html - ORIGINAL FLOATING CARD DESIGN -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">All Courses</h1>
+        <p class="lead text-muted">Browse through all our courses and start your learning journey</p>
+    </div>
+    
+    <!-- ============================= -->
+    <!-- +2 LEVEL SECTION (Floating Cards) -->
+    <!-- ============================= -->
+    <div class="category mb-5">
+        <div class="category-header mb-4">
+            <h2 class="category-title">
+                <i class="fas fa-graduation-cap me-2"></i> +2 Level
+            </h2>
+            <p class="category-subtitle">Higher Secondary Education Courses</p>
+        </div>
+        
+        <div class="course-boxes">
+            {% for course in courses %}
+                {% if course.level == '+2' %}
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description|truncatewords:25 }}</p>
+                    <div class="course-meta">
+                        <span><i class="fas fa-book"></i> {{ course.subject_count }} Subjects</span>
+                    </div>
+                    <a href="{% url 'course_detail' course.slug %}" class="btn btn-outline-primary">
+                        Explore Course
+                    </a>
+                </div>
+                {% endif %}
+            {% empty %}
+            <div class="course-card empty-card">
+                <div class="course-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Coming Soon</h3>
+                <p>+2 Level courses will be added soon</p>
+                <span class="btn btn-outline disabled">Coming Soon</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- ============================= -->
+    <!-- BACHELOR LEVEL SECTION -->
+    <!-- ============================= -->
+    <div class="category mb-5">
+        <div class="category-header mb-4">
+            <h2 class="category-title">
+                <i class="fas fa-university me-2"></i> Bachelor Level (BBS)
+            </h2>
+            <p class="category-subtitle">Bachelor of Business Studies Courses</p>
+        </div>
+        
+        <div class="course-boxes">
+            {% for course in courses %}
+                {% if course.level == 'bachelor' %}
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description|truncatewords:25 }}</p>
+                    <div class="course-meta">
+                        <span><i class="fas fa-book"></i> {{ course.subject_count }} Subjects</span>
+                    </div>
+                    <a href="{% url 'course_detail' course.slug %}" class="btn btn-outline-primary">
+                        Explore Course
+                    </a>
+                </div>
+                {% endif %}
+            {% empty %}
+            <div class="course-card empty-card">
+                <div class="course-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Coming Soon</h3>
+                <p>Bachelor Level courses will be added soon</p>
+                <span class="btn btn-outline disabled">Coming Soon</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- ============================= -->
+    <!-- MASTER LEVEL SECTION -->
+    <!-- ============================= -->
+    <div class="category mb-5">
+        <div class="category-header mb-4">
+            <h2 class="category-title">
+                <i class="fas fa-user-graduate me-2"></i> Master Level (MBS)
+            </h2>
+            <p class="category-subtitle">Master of Business Studies Courses</p>
+        </div>
+        
+        <div class="course-boxes">
+            {% for course in courses %}
+                {% if course.level == 'master' %}
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description|truncatewords:25 }}</p>
+                    <div class="course-meta">
+                        <span><i class="fas fa-book"></i> {{ course.subject_count }} Subjects</span>
+                    </div>
+                    <a href="{% url 'course_detail' course.slug %}" class="btn btn-outline-primary">
+                        Explore Course
+                    </a>
+                </div>
+                {% endif %}
+            {% empty %}
+            <div class="course-card empty-card">
+                <div class="course-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Coming Soon</h3>
+                <p>Master Level courses will be added soon</p>
+                <span class="btn btn-outline disabled">Coming Soon</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Back to Home Button -->
+    <div class="text-center mt-5">
+        <a href="{% url 'home' %}" class="btn btn-lg btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Add CSS for the original design -->
+<style>
+    .category-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .category-title {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .category-subtitle {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+    }
+    
+    .course-boxes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .course-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .course-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, rgba(66, 153, 225, 0.1) 0%, rgba(66, 153, 225, 0.2) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .course-icon i {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+    }
+    
+    .course-card h3 {
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+    }
+    
+    .course-card p {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .course-meta {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+    }
+    
+    .course-meta i {
+        margin-right: 5px;
+    }
+    
+    .empty-card {
+        opacity: 0.7;
+    }
+    
+    @media (max-width: 768px) {
+        .course-boxes {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

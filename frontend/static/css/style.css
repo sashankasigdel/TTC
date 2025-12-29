@@ -752,3 +752,56 @@ footer {
 #nav-links > * {
     margin: 0 2px;
 }
+
+/* Add to your style.css */
+.btn-view-all {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+}
+
+.btn-view-all:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+    color: white;
+}
+
+.btn-view-all i {
+    font-size: 1.2em;
+}
+
+
+:root {
+    --primary-color: #4299e1;
+    --primary-dark: #3182ce;
+    --secondary-color: #4a5568;
+    --accent-color: #ed8936;  /* Orange for video button */
+    --light-color: #f7fafc;
+    --dark-color: #2d3748;
+    --gray-light: #e2e8f0;
+    --gray: #a0aec0;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.btn-accent {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+}
+
+.btn-accent:hover {
+    background-color: #dd6b20;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
