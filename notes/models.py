@@ -149,7 +149,20 @@ class Chapter(models.Model):
         blank=True,
         help_text="Chapter content (text only for now)"
     )
-    
+
+    # ============= NEW FIELDS ADDED HERE =============
+    pdf_file = models.FileField(
+        upload_to='',
+        blank=True,
+        null=True,
+        help_text="Upload PDF file for this chapter"
+    )
+    video_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Enter Google Drive/YouTube video link"
+    )
+
     display_order = models.IntegerField(
         default=0,
         help_text="Order in which chapters appear (lower number = first)"

@@ -298,3 +298,29 @@ def home(request):
         'page_title': 'The Tuition Class - Home'
     }
     return render(request, 'index.html', context)
+
+def study_chapter(request, course_slug, subject_slug, chapter_slug):
+    """
+    Enhanced PDF viewer for 'Study Chapter' button
+    """
+    # Get the chapter
+    course = get_object_or_404(Course, slug=course_slug, is_active=True)
+    subject = get_object_or_404(Subject, slug=subject_slug, course=course, is_active=True)
+    chapter = get_object_or_404(Chapter, slug=chapter_slug, subject=subject, is_active=True)
+    
+    # Check if PDF exists
+    if not chapter.pdf_file:
+        messages.warning(request, "No PDF available for this chapter yet.")
+        return redirect('chapter_detail', course_slug=course_slug, subject_slug=subject_slug, chapter_slug=chapter_slug)
+    
+    # Prepare context for template
+    context = {
+        'course': course,
+        'subject': subject,
+        'chapter': chapter,
+        'pdf_url': chapter.pdf_file.url,
+        'page_title': f"Study: {chapter.title}"
+    }
+    
+    # Render the enhanced PDF viewer
+    return render(request, 'courses/study_chapter.html', context)

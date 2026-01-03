@@ -73,8 +73,7 @@ class SubjectAdmin(admin.ModelAdmin):
 # ============================================================================
 @admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'display_order', 'is_active', 'created_at')
-    list_filter = ('subject', 'is_active')
+    list_display = ('title', 'subject', 'has_pdf', 'has_video', 'display_order', 'is_active', 'created_at')
     search_fields = ('title', 'content')
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ('display_order', 'is_active')
@@ -84,7 +83,20 @@ class ChapterAdmin(admin.ModelAdmin):
         ('Basic Information', {
             'fields': ('subject', 'title', 'slug', 'content')
         }),
+         ('Chapter Resources', {
+            'fields': ('pdf_file', 'video_url')
+        }),
         ('Display Settings', {
             'fields': ('display_order', 'is_active')
         }),
     )
+
+    def has_pdf(self, obj):
+        return bool(obj.pdf_file)
+    has_pdf.boolean = True
+    has_pdf.short_description = 'PDF'
+    
+    def has_video(self, obj):
+        return bool(obj.video_url)
+    has_video.boolean = True
+    has_video.short_description = 'Video'

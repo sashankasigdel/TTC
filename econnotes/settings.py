@@ -11,6 +11,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
+
 # USE YOUR REAL GMAIL CREDENTIALS
 EMAIL_HOST_USER = 'sashankadada36@gmail.com'  # Your actual Gmail
 EMAIL_HOST_PASSWORD = 'ijza lwtz xzoc zukg'  # Your actual Gmail password
@@ -119,6 +120,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # For production, you'll need this later
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/media')
 
 # settings.py - Add to the bottom
 
