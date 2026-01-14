@@ -2,20 +2,7 @@
 {% load static %}
 
 {% block content %}
-<!-- When logged in -->
-{% if user.is_authenticated %}
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var loginBtn = document.querySelector('.btn-login');
-    if (loginBtn) {
-      loginBtn.innerHTML = '<i class="fas fa-user"></i> {{ user.username }}';
-      loginBtn.onclick = function() {
-        window.location.href = '/logout/';
-      };
-    }
-  });
-</script>
-{% endif %}
+
 
 <!-- Hero Section -->
 <section class="hero">
@@ -23,7 +10,7 @@
     <h1>Welcome to The Tuition Class</h1>
     <p>Learn anywhere, anytime — your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
     <div class="hero-buttons">
-      <a href="#courses" class="btn btn-primary">Explore Courses</a>
+      <a href="{% url 'courses_page' %}" class="btn btn-primary">Explore Courses</a>
       <a href="#" class="btn btn-secondary">Learn More</a>
     </div>
   </div>

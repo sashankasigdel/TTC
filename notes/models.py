@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import random
 import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # Your existing Note model (if you have it)
 class Note(models.Model):
@@ -18,6 +21,10 @@ class UserProfile(models.Model):
     email_verified = models.BooleanField(default=False)
     verification_otp = models.CharField(max_length=6, blank=True, null=True)
     otp_created_at = models.DateTimeField(blank=True, null=True)
+
+    # ========== ADD THIS LINE ==========
+    is_premium = models.BooleanField(default=False)
+    # ===================================
     
     def generate_otp(self):
         """Generate a 6-digit OTP"""
@@ -42,6 +49,24 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username}"
+    
+    def update_premium_status(self):
+        """Sync is_premium with active PremiumSubscription"""
+        from datetime import date
+        from .models import PremiumSubscription
+        
+        has_active_subscription = PremiumSubscription.objects.filter(
+            user=self.user,
+            is_active=True,
+            ends_at__gte=date.today()
+        ).exists()
+        
+        # Update is_premium field if changed
+        if self.is_premium != has_active_subscription:
+            self.is_premium = has_active_subscription
+            self.save(update_fields=['is_premium'])
+        
+        return has_active_subscription
     
     
 # ============================================================================
@@ -188,3 +213,88 @@ class Chapter(models.Model):
             'subject_slug': self.subject.slug,
             'chapter_slug': self.slug
         })
+    
+    # ============================================================================
+# PREMIUM & PAYMENT MODELS
+# ============================================================================
+
+class Payment(models.Model):
+    """Simple payment model for premium subscription"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    email = models.EmailField(default='unknown@example.com')
+    screenshot = models.ImageField(upload_to='payments/')
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-submitted_at']
+    
+    def __str__(self):
+        return f"Payment by {self.user.username}"
+    
+# ============================================================================
+# PREMIUM SUBSCRIPTION MODEL
+# ============================================================================
+
+class PremiumSubscription(models.Model):
+    """Track premium subscriptions with history"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='premium_subscriptions')
+    started_at = models.DateTimeField(auto_now_add=True)
+    ends_at = models.DateField()
+    is_active = models.BooleanField(default=True)
+    payment = models.ForeignKey(Payment, null=True, blank=True, on_delete=models.SET_NULL)
+    admin_notes = models.TextField(blank=True, help_text="Admin notes or reason for premium")
+    
+    class Meta:
+        ordering = ['-started_at']
+        verbose_name = "Premium Subscription"
+        verbose_name_plural = "Premium Subscriptions"
+    
+    def __str__(self):
+        status = "Active" if self.is_active else "Inactive"
+        return f"{self.user.username} - {self.ends_at} ({status})"
+    
+    @property
+    def days_remaining(self):
+        """Calculate days remaining until expiration"""
+        from datetime import date
+        if self.is_active and self.ends_at:
+            days = (self.ends_at - date.today()).days
+            return max(days, 0)  # Return 0 if expired
+        return 0
+    
+    @property
+    def status(self):
+        """Get subscription status with colors"""
+        if not self.is_active:
+            return "revoked"
+        days = self.days_remaining
+        if days > 7:
+            return "active"
+        elif days > 0:
+            return "expiring_soon"
+        else:
+            return "expired"
+        
+
+@receiver(post_save, sender=PremiumSubscription)
+def update_user_profile_premium(sender, instance, **kwargs):
+    """Update UserProfile.is_premium when subscription changes"""
+    try:
+        if hasattr(instance.user, 'profile'):
+            instance.user.profile.update_premium_status()
+    except:
+        pass
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """Auto-create UserProfile when User is created"""
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    """Auto-save UserProfile when User is saved"""
+    try:
+        instance.profile.save()
+    except:
+        pass

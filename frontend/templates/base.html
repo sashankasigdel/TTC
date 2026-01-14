@@ -59,6 +59,41 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   {% block extra_css %}{% endblock %}
 </head>
+<script>
+// Super simple dropdown with delay
+document.addEventListener('DOMContentLoaded', function() {
+    const userMenu = document.querySelector('.user-menu');
+    const dropdown = document.querySelector('.user-dropdown');
+    let timer;
+    
+    if (userMenu && dropdown) {
+        // Show dropdown
+        userMenu.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+            dropdown.style.display = 'block';
+        });
+        
+        // Hide dropdown after 3 seconds
+        userMenu.addEventListener('mouseleave', function() {
+            timer = setTimeout(function() {
+                dropdown.style.display = 'none';
+            }, 3000); // 3 seconds
+        });
+        
+        // Keep dropdown open when mouse is over it
+        dropdown.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+        });
+        
+        // Hide dropdown after 3 seconds when leaving dropdown
+        dropdown.addEventListener('mouseleave', function() {
+            timer = setTimeout(function() {
+                dropdown.style.display = 'none';
+            }, 3000); // 3 seconds
+        });
+    }
+});
+</script>
 <body>
   <!-- Your Exact Header -->
   <header>
@@ -69,15 +104,21 @@
       </div>
       <nav id="nav-links">
         <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
-        <a href="#courses">Courses</a>
+        <a href="{% url 'courses_page' %}">Courses</a>
         <a href="#news">News</a>
         <a href="#">Tools</a>
-        <a href="#">About Us</a>
+        <a href="#about">About Us</a>
        <!-- In your base.html navbar, update the login section -->
 {% if user.is_authenticated %}
 <div class="user-menu">
   <a href="#" class="btn-login">
     <i class="fas fa-user"></i> {{ user.username }}
+    
+    <!-- Crown emoji for premium users -->
+    {% if user.profile.is_premium %}
+    👑
+    {% endif %}
+    
   </a>
   <div class="user-dropdown">
     <a href="/profile/"><i class="fas fa-user-circle"></i> My Profile</a>
@@ -120,7 +161,7 @@
           <h3>Quick Links</h3>
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/">Courses</a></li>
+            <li><a href="{% url 'courses_page' %}">Courses</a></li>
             <li><a href="#news">News</a></li>
             <li><a href="#">Tools</a></li>
             <li><a href="#">About Us</a></li>

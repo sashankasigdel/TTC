@@ -11,15 +11,15 @@
 
     <!-- Chapters Grid (Your Original Multi-View Design) -->
     <div class="chapters-grid">
-        {% for chapter in chapters %}  <!-- ← ADD THIS LOOP! -->
+        {% for chapter in chapters %}
         <div class="chapter-card">
             <div class="chapter-number">{{ forloop.counter }}</div>
             <h3 class="chapter-title">{{ chapter.title }}</h3>
             <p class="chapter-description">{{ chapter.content|truncatewords:15 }}</p>
             
-            <!-- Chapter Actions (MOVE INSIDE LOOP) -->
+            <!-- Chapter Actions - MINIMAL CHANGES FOR PREMIUM -->
             <div class="chapter-actions">
-                <!-- Study Chapter (Enhanced PDF Viewer) -->
+                <!-- Study Chapter (Enhanced PDF Viewer) - UNCHANGED -->
                 {% if chapter.pdf_file %}
                 <a href="{% url 'study_chapter' course.slug subject.slug chapter.slug %}" class="btn btn-primary">
                     <i class="fas fa-book-open"></i> Study Chapter
@@ -30,25 +30,45 @@
                 </button>
                 {% endif %}
                 
-                <!-- View/Download PDF (Direct PDF Link) -->
+                <!-- View/Download PDF (ADDED PREMIUM CHECK) -->
                 {% if chapter.pdf_file %}
-                <a href="{{ chapter.pdf_file.url }}" 
-                   class="btn btn-secondary" 
-                   target="_blank"
-                   download="{{ chapter.title|slugify }}.pdf">
-                    <i class="fas fa-file-pdf"></i> View/Download PDF
-                </a>
+                    {% if user.is_authenticated and user.profile.is_premium %}
+                    <!-- Premium users get download link -->
+                    <a href="{{ chapter.pdf_file.url }}" 
+                       class="btn btn-secondary" 
+                       target="_blank"
+                       download="{{ chapter.title|slugify }}.pdf">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </a>
+                    {% else %}
+                    <!-- Non-premium users see locked button with popup -->
+                    <button type="button" 
+                            class="btn btn-secondary premium-locked" 
+                            data-chapter-title="{{ chapter.title }}">
+                        <i class="fas fa-lock"></i> Download PDF
+                    </button>
+                    {% endif %}
                 {% else %}
                 <button class="btn btn-secondary" disabled title="PDF not available yet">
-                    <i class="fas fa-file-pdf"></i> View PDF
+                    <i class="fas fa-file-pdf"></i> Download PDF
                 </button>
                 {% endif %}
                 
-                <!-- Watch Video (Direct Google Drive Link) -->
+                <!-- Watch Video (ADDED PREMIUM CHECK) -->
                 {% if chapter.video_url %}
-                <a href="{{ chapter.video_url }}" class="btn btn-accent" target="_blank">
-                    <i class="fas fa-video"></i> Watch Video
-                </a>
+                    {% if user.is_authenticated and user.profile.is_premium %}
+                    <!-- Premium users get video link -->
+                    <a href="{{ chapter.video_url }}" class="btn btn-accent" target="_blank">
+                        <i class="fas fa-video"></i> Watch Video
+                    </a>
+                    {% else %}
+                    <!-- Non-premium users see locked button with popup -->
+                    <button type="button" 
+                            class="btn btn-accent premium-locked" 
+                            data-chapter-title="{{ chapter.title }}">
+                        <i class="fas fa-lock"></i> Watch Video
+                    </button>
+                    {% endif %}
                 {% else %}
                 <button class="btn btn-accent" disabled title="Video not available yet">
                     <i class="fas fa-video"></i> Watch Video
@@ -76,7 +96,55 @@
     </div>
 </div>
 
-<!-- Your Original CSS for Multi-View Chapters -->
+<!-- PREMIUM MODAL (ADD THIS AT THE END) -->
+<div id="premiumModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; border-radius: 12px; padding: 30px; max-width: 400px; width: 90%; position: relative;">
+        <button onclick="hidePremiumModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">
+            &times;
+        </button>
+        
+        <div style="text-align: center;">
+            <div style="font-size: 40px; color: #f6ad55; margin-bottom: 10px;">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #333;">Premium Feature Locked</h3>
+            <p style="color: #666; margin-bottom: 20px;" id="modalChapterText">
+                Upgrade to premium to access this feature
+            </p>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <i class="fas fa-check" style="color: #38a169; margin-right: 10px;"></i>
+                    <span>Download all PDFs</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <i class="fas fa-check" style="color: #38a169; margin-right: 10px;"></i>
+                    <span>Watch video lectures</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <i class="fas fa-check" style="color: #38a169; margin-right: 10px;"></i>
+                    <span>Full access for 30 Days</span>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <div style="font-size: 32px; font-weight: bold;">Rs.200</div>
+                <div>One-time payment</div>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="hidePremiumModal()" style="flex: 1; padding: 12px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">
+                    Maybe Later
+                </button>
+                <a href="{% url 'premium' %}" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #38a169, #2f855a); color: white; text-align: center; border-radius: 6px; text-decoration: none; font-weight: 600;">
+                    Get Premium
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Your Original CSS (UNCHANGED) -->
 <style>
     /* Page Header */
     .page-header {
@@ -237,4 +305,51 @@
         }
     }
 </style>
+
+<!-- ADD THIS JAVASCRIPT (at the very end) -->
+<script>
+// Premium modal functions
+function showPremiumModal(chapterTitle) {
+    const modal = document.getElementById('premiumModal');
+    const modalText = document.getElementById('modalChapterText');
+    
+    if (chapterTitle) {
+        modalText.textContent = `Upgrade to premium to access: "${chapterTitle}"`;
+    } else {
+        modalText.textContent = 'Upgrade to premium to access this feature';
+    }
+    
+    modal.style.display = 'flex';
+}
+
+function hidePremiumModal() {
+    document.getElementById('premiumModal').style.display = 'none';
+}
+
+// Add event listeners to premium locked buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const lockedButtons = document.querySelectorAll('.premium-locked');
+    
+    lockedButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const chapterTitle = this.getAttribute('data-chapter-title');
+            showPremiumModal(chapterTitle);
+        });
+    });
+    
+    // Close modal when clicking outside
+    document.getElementById('premiumModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hidePremiumModal();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hidePremiumModal();
+        }
+    });
+});
+</script>
 {% endblock %}

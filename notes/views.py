@@ -5,12 +5,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .email_utils import send_otp_email  # ADD THIS IMPORT
+from .email_utils import send_otp_email  
 from django.contrib.auth.decorators import user_passes_test
 import logging
 from django.shortcuts import render, get_object_or_404
-from .models import Course, Subject, Chapter
+from .models import Course, Subject, Chapter, Payment
 from django.core.paginator import Paginator
+from functools import wraps
+from django.contrib.auth.decorators import login_required
+ 
 
 logger = logging.getLogger(__name__)
 
@@ -321,6 +324,56 @@ def study_chapter(request, course_slug, subject_slug, chapter_slug):
         'pdf_url': chapter.pdf_file.url,
         'page_title': f"Study: {chapter.title}"
     }
+
     
     # Render the enhanced PDF viewer
     return render(request, 'courses/study_chapter.html', context)
+    
+# ============================================================================
+# PREMIUM SUBSCRIPTION VIEW
+# ============================================================================
+
+
+def premium(request):
+    """Premium subscription payment page"""
+    # Check if already premium
+    if hasattr(request.user, 'profile') and request.user.profile.is_premium:
+        messages.info(request, "You already have premium access!")
+        return redirect('courses_page')
+    
+    if request.method == 'POST':
+        # Handle payment submission
+        screenshot = request.FILES.get('screenshot')
+        email = request.POST.get('email')
+
+        if not screenshot:
+            messages.error(request, "Please upload payment screenshot.")
+            return redirect('premium')
+        
+        if not email:
+            messages.error(request, "Please provide your email address.")
+            return redirect('premium')
+
+
+        # Save payment
+        Payment.objects.create(
+            user=request.user,
+            email=email,
+            screenshot=screenshot
+        )
+        
+        messages.success(request, 
+            "✅ Payment submitted! We'll verify within 24 hours."
+        )
+        return redirect('home')
+    
+    # GET request - show payment page
+    context = {
+        'page_title': 'Get Premium Access',
+        'user': request.user,
+    }
+    return render(request, 'premium.html', context)
+
+
+
+    

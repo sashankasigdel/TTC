@@ -28,7 +28,7 @@ urlpatterns = [
      path('courses/<slug:course_slug>/<slug:subject_slug>/<slug:chapter_slug>/study/', 
          views.study_chapter, name='study_chapter'),
 
-
+     path('premium/', views.premium, name='premium'),
 
     # Universal pages for everything else
     path('<str:page_name>/', views.universal_page, name='universal_page'),
