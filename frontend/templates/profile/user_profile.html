@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-user-circle me-2"></i>My Profile</h4>
+                </div>
+                <div class="card-body">
+                    
+                    <!-- Premium Status Badge -->
+                    <div class="text-center mb-4">
+                        {% if user.profile.is_premium %}
+                        <div class="premium-badge-large mb-3">
+                            <i class="fas fa-crown fa-2x text-warning"></i>
+                            <h5 class="mt-2 text-success">Premium Member</h5>
+                            {% if user.premium_subscriptions.exists %}
+                                {% with active_sub=user.premium_subscriptions.first %}
+                                    {% if active_sub.is_active and active_sub.ends_at %}
+                                        <p class="text-muted mb-1">
+                                            Premium until: <strong>{{ active_sub.ends_at|date:"F d, Y" }}</strong>
+                                        </p>
+                                        <p class="text-muted">
+                                            {% with days=active_sub.days_remaining %}
+                                                {% if days > 0 %}
+                                                    <span class="badge bg-success">{{ days }} days remaining</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning">Expired</span>
+                                                {% endif %}
+                                            {% endwith %}
+                                        </p>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="free-badge-large mb-3">
+                            <i class="fas fa-user fa-2x text-secondary"></i>
+                            <h5 class="mt-2 text-muted">Free Member</h5>
+                            <p class="text-muted small">Upgrade to unlock premium features</p>
+                            <a href="{% url 'premium' %}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-crown me-1"></i>Upgrade to Premium
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- User Information -->
+                    <div class="user-info-section">
+                        <h5 class="border-bottom pb-2 mb-3">Account Information</h5>
+                        
+                        <div class="row mb-3">
+                            <div class="col-4 fw-semibold">Username:</div>
+                            <div class="col-8">{{ user.username }}</div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-4 fw-semibold">Email:</div>
+                            <div class="col-8">{{ user.email }}</div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-4 fw-semibold">Joined:</div>
+                            <div class="col-8">{{ user.date_joined|date:"F d, Y" }}</div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-4 fw-semibold">Last Login:</div>
+                            <div class="col-8">{{ user.last_login|date:"F d, Y, g:i a"|default:"Never" }}</div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-4 fw-semibold">Email Verified:</div>
+                            <div class="col-8">
+                                {% if user.profile.email_verified %}
+                                <span class="badge bg-success">Verified ✓</span>
+                                {% else %}
+                                <span class="badge bg-warning">Not Verified</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Features (if premium) -->
+                    {% if user.profile.is_premium %}
+                    <div class="mt-4 pt-3 border-top">
+                        <h5 class="border-bottom pb-2 mb-3">Premium Benefits</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Download all PDFs</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Watch video lectures</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Full content access</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Unlimited access</li>
+                                
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Priority support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Account Actions -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h5 class="border-bottom pb-2 mb-3">Account Actions</h5>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a href="{% url 'premium' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-crown me-1"></i>
+                                {% if user.profile.is_premium %}Extend Premium{% else %}Get Premium{% endif %}
+                            </a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-key me-1"></i>Change Password
+                            </a>
+                            <a href="#" class="btn btn-outline-info">
+                                <i class="fas fa-question-circle me-1"></i>Help
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-muted text-center small">
+                    <i class="fas fa-shield-alt me-1"></i> Your account is secure
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.premium-badge-large {
+    background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%);
+    border: 2px solid #ffd54f;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.free-badge-large {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.user-info-section .row {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info-section .row:last-child {
+    border-bottom: none;
+}
+
+.card {
+    border-radius: 12px;
+    border: none;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    .user-info-section .col-4 {
+        width: 40%;
+    }
+    
+    .user-info-section .col-8 {
+        width: 60%;
+    }
+}
+</style>
+{% endblock %}

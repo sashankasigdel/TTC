@@ -285,16 +285,3 @@ def update_user_profile_premium(sender, instance, **kwargs):
     except:
         pass
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    """Auto-create UserProfile when User is created"""
-    if created:
-        UserProfile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    """Auto-save UserProfile when User is saved"""
-    try:
-        instance.profile.save()
-    except:
-        pass

@@ -29,6 +29,9 @@ urlpatterns = [
          views.study_chapter, name='study_chapter'),
 
      path('premium/', views.premium, name='premium'),
+     path('profile/', views.user_profile, name='user_profile'),
+     
+     path('forgot-password/', views.forgot_password, name='forgot_password'),
 
     # Universal pages for everything else
     path('<str:page_name>/', views.universal_page, name='universal_page'),

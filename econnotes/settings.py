@@ -14,11 +14,11 @@ EMAIL_USE_SSL = False
 
 # USE YOUR REAL GMAIL CREDENTIALS
 EMAIL_HOST_USER = 'sashankadada36@gmail.com'  # Your actual Gmail
-EMAIL_HOST_PASSWORD = 'ijza lwtz xzoc zukg'  # Your actual Gmail password
+EMAIL_HOST_PASSWORD = 'pscqgxoxrdjmjgez'  # Your actual Gmail password
 
 # Sender info
-DEFAULT_FROM_EMAIL = 'The Tuition Class <thetuitionclass01@gmail.com>'
-SERVER_EMAIL = 'thetuitionclass01@gmail.com'
+DEFAULT_FROM_EMAIL = 'The Tuition Class <sashankadada36@gmail.com>'
+SERVER_EMAIL = 'sashankadada36@gmail.com'
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -130,16 +130,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/media')
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
     # Title on the brand (19 chars max)
-    "site_brand": "The Tuition Class Admin",
+    "site_brand": "ADHYAYAN Admin",
     
     # Logo to use for your site, must be present in static files
     "site_logo": "books.ico",
     
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to The Tuition Class Admin Panel",
+    "welcome_sign": "Welcome to The Adhyayan Admin Panel",
     
     # Copyright on the footer
-    "copyright": "The Tuition Class",
+    "copyright": "ADHYAYAN ",
     
     # The model admin to search from the search bar
     "search_model": "auth.User",

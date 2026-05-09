@@ -1,0 +1,16 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+    <!-- Simple button -->
+    <div style="margin: 20px 0; text-align: center;">
+        <a href="{{ report_url }}" 
+           style="display: inline-block; padding: 12px 25px; 
+                  background: linear-gradient(to right, #3498db, #2c3e50); 
+                  color: white; text-decoration: none; border-radius: 5px; 
+                  font-weight: bold; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+            📊 Click to View System Report
+        </a>
+    </div>
+    
+    {{ block.super }}
+{% endblock %}

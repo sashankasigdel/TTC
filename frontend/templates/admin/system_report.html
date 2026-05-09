@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>📊 System Status Report - Adhyayan</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+            color: #333;
+        }
+        
+        .report-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .report-header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .report-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .report-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #333;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-weight: bold;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .info {
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .action-required {
+            background: #fff5f5;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <div class="report-header">
+            <h1>Adhyayan - SYSTEM STATUS REPORT</h1>
+            <div style="border-top: 2px solid #333; padding-top: 10px; margin-top: 10px;">
+                Report Generated: {{ report_date|date:"F d, Y, g:i A" }}
+            </div>
+        </div>
+        
+        <!-- USER STATISTICS -->
+        <div class="report-section">
+            <div class="section-title">📊 USER STATISTICS</div>
+            <div class="stat-row">
+                <span class="stat-label">Total Registered Users:</span>
+                <span class="stat-value">{{ total_users }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Premium Users:</span>
+                <span class="stat-value success">{{ premium_users }} ({{ premium_percentage|floatformat:1 }}%)</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Free Users:</span>
+                <span class="stat-value">{{ free_users }} ({{ 100|add:premium_percentage|floatformat:1 }}%)</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">New Users (Last 30 days):</span>
+                <span class="stat-value info">{{ new_users }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Active Users (Last 7 days):</span>
+                <span class="stat-value success">{{ active_users }}</span>
+            </div>
+        </div>
+        
+        <!-- PREMIUM SUBSCRIPTIONS -->
+        <div class="report-section">
+            <div class="section-title">👑 PREMIUM SUBSCRIPTIONS</div>
+            <div class="stat-row">
+                <span class="stat-label">Active Premium (unexpired):</span>
+                <span class="stat-value success">{{ active_premium }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Expiring in 3 days:</span>
+                <span class="stat-value warning">{{ expiring_soon }}</span>
+            </div>
+        </div>
+        
+        <!-- REVENUE & PAYMENTS -->
+        <div class="report-section">
+            <div class="section-title">💰 REVENUE & PAYMENTS</div>
+            <div class="stat-row">
+                <span class="stat-label">Estimated Total Revenue:</span>
+                <span class="stat-value success">रु {{ estimated_revenue|floatformat:0 }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Revenue (Last 30 days):</span>
+                <span class="stat-value info">रु {{ monthly_revenue|floatformat:0 }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Total Payments:</span>
+                <span class="stat-value">{{ total_payments }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Approved Payments:</span>
+                <span class="stat-value success">{{ approved_payments }} ({{ approval_percentage|floatformat:1 }}%)</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Pending Payments:</span>
+                <span class="stat-value warning">{{ pending_payments }}</span>
+            </div>
+        </div>
+        
+        <!-- CONTENT STATISTICS -->
+        <div class="report-section">
+            <div class="section-title">📚 CONTENT STATISTICS</div>
+            <div class="stat-row">
+                <span class="stat-label">Active Courses:</span>
+                <span class="stat-value">{{ total_courses }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Subjects:</span>
+                <span class="stat-value">{{ total_subjects }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Chapters:</span>
+                <span class="stat-value">{{ total_chapters }}</span>
+            </div>
+        </div>
+        
+        <!-- ACTION REQUIRED -->
+        {% if pending_payments > 0 or expiring_soon > 0 %}
+        <div class="action-required">
+            <div class="section-title">⚠️ ACTION REQUIRED</div>
+            {% if pending_payments > 0 %}
+            <div class="stat-row">
+                <span class="stat-label warning">• Payments pending approval:</span>
+                <span class="stat-value warning">{{ pending_payments }}</span>
+            </div>
+            {% endif %}
+            {% if expiring_soon > 0 %}
+            <div class="stat-row">
+                <span class="stat-label warning">• Premium expiring in 3 days:</span>
+                <span class="stat-value warning">{{ expiring_soon }} users</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <div class="footer">
+            =============================================<br>
+            Report ID: ADH-{{ report_date|date:"Ymd-His" }}
+        </div>
+        
+        <div class="back-link">
+            <a href="/admin/notes/premiumsubscription/">← Back to Premium Subscriptions</a> | 
+            <a href="/admin/">← Back to Admin Panel</a>
+        </div>
+    </div>
+</body>
+</html>

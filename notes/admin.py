@@ -6,6 +6,95 @@ from django.contrib import messages
 from datetime import date, timedelta
 from .models import UserProfile, Course, Subject, Chapter, Payment, PremiumSubscription
 
+# notes/admin.py - ADD AT THE TOP (after imports)
+from django.shortcuts import render
+from django.utils import timezone
+from datetime import timedelta
+from django.contrib.auth.models import User
+from django.db.models import Count
+
+def system_report_view(request):
+    """Simple system report for admin panel"""
+    today = timezone.now()
+    thirty_days_ago = today - timedelta(days=30)
+    seven_days_ago = today - timedelta(days=7)
+    
+    # Get counts
+    total_users = User.objects.count()
+    premium_users = User.objects.filter(profile__is_premium=True).count()
+    free_users = total_users - premium_users
+    new_users = User.objects.filter(date_joined__gte=thirty_days_ago).count()
+    active_users = User.objects.filter(last_login__gte=seven_days_ago).count()
+    
+    # Premium stats
+    active_premium = PremiumSubscription.objects.filter(
+        is_active=True,
+        ends_at__gte=today.date()
+    ).count()
+    
+    expiring_soon = PremiumSubscription.objects.filter(
+        is_active=True,
+        ends_at__gte=today.date(),
+        ends_at__lte=today.date() + timedelta(days=3)
+    ).count()
+    
+    # Payment stats
+    total_payments = Payment.objects.count()
+    
+    # Check if payment has been approved (has premium subscription)
+    approved_payments = 0
+    for payment in Payment.objects.all():
+        if PremiumSubscription.objects.filter(payment=payment, is_active=True).exists():
+            approved_payments += 1
+    
+    pending_payments = total_payments - approved_payments
+    
+    # Content stats
+    total_courses = Course.objects.filter(is_active=True).count()
+    total_subjects = Subject.objects.filter(is_active=True).count()
+    total_chapters = Chapter.objects.filter(is_active=True).count()
+    
+    # Calculate revenue (assume ₹1000 per premium)
+    estimated_revenue = premium_users * 1000
+    monthly_revenue = new_users * 1000
+    
+    context = {
+        'report_date': today,
+        
+        # User stats
+        'total_users': total_users,
+        'premium_users': premium_users,
+        'free_users': free_users,
+        'new_users': new_users,
+        'active_users': active_users,
+        'premium_percentage': (premium_users / total_users * 100) if total_users > 0 else 0,
+        
+        # Premium stats
+        'active_premium': active_premium,
+        'expiring_soon': expiring_soon,
+        
+        # Payment stats
+        'total_payments': total_payments,
+        'approved_payments': approved_payments,
+        'pending_payments': pending_payments,
+        'approval_percentage': (approved_payments / total_payments * 100) if total_payments > 0 else 0,
+        
+        # Content stats
+        'total_courses': total_courses,
+        'total_subjects': total_subjects,
+        'total_chapters': total_chapters,
+        
+        # Revenue
+        'estimated_revenue': estimated_revenue,
+        'monthly_revenue': monthly_revenue,
+        
+        # Date info
+        'thirty_days_ago': thirty_days_ago.date(),
+        'seven_days_ago': seven_days_ago.date(),
+    }
+    
+    return render(request, 'admin/system_report.html', context)
+
 # ============================================================================
 # 1. USER PROFILE ADMIN
 # ============================================================================
@@ -261,6 +350,23 @@ class PremiumSubscriptionAdmin(admin.ModelAdmin):
             'fields': ('days_left_display',)
         }),
     )
+
+    change_list_template = 'admin/notes/premiumsubscription/change_list.html'
+    
+    def changelist_view(self, request, extra_context=None):
+        if extra_context is None:
+            extra_context = {}
+        extra_context['report_url'] = 'system-report/'
+        return super().changelist_view(request, extra_context)
+
+    def get_urls(self):
+        """Add system report URL"""
+        from django.urls import path
+        urls = super().get_urls()
+        custom_urls = [
+            path('system-report/', self.admin_site.admin_view(system_report_view), name='system_report'),
+        ]
+        return custom_urls + urls
     
     def email_column(self, obj):
         return obj.user.email if obj.user else "No user"

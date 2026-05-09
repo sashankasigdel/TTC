@@ -13,6 +13,12 @@ from .models import Course, Subject, Chapter, Payment
 from django.core.paginator import Paginator
 from functools import wraps
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
+from django.contrib.admin.views.decorators import staff_member_required
+from datetime import datetime, timedelta
+from django.db.models import Count, Avg, Sum, Q
+from django.utils import timezone
+
  
 
 logger = logging.getLogger(__name__)
@@ -38,7 +44,13 @@ def login_view(request):
         if user is not None:
             login(request, user)
             
-            # Check email verification
+            # Check if user is staff (admin)
+            if user.is_staff:
+                # Admin users should go to admin panel
+                messages.success(request, f'Welcome back, Admin {username}!')
+                return redirect('/admin/')
+            
+            # Regular users continue with existing flow
             if hasattr(user, 'profile') and user.profile.email_verified:
                 messages.success(request, f'Welcome back, {username}!')
             else:
@@ -60,7 +72,7 @@ def logout_view(request):
     return redirect('home')
 
 # ========== NEW EMAIL VERIFICATION FUNCTIONS ==========
-# notes/views.py - Update register_view
+
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -374,6 +386,138 @@ def premium(request):
     }
     return render(request, 'premium.html', context)
 
-
-
+@login_required
+def user_profile(request):
+    """User profile page showing account information and premium status"""
+    context = {
+        'page_title': 'My Profile',
+        'user': request.user,
+    }
+    return render(request, 'profile/user_profile.html', context)
     
+def forgot_password(request):
+    """Simple password reset - one form"""
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        # Basic validation
+        if not all([username, email, new_password, confirm_password]):
+            messages.error(request, "Please fill all fields")
+            return render(request, 'forgot_password.html')
+        
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return render(request, 'forgot_password.html')
+        
+        if len(new_password) < 6:
+            messages.error(request, "Password must be at least 6 characters")
+            return render(request, 'forgot_password.html')
+        
+        # Find user
+        try:
+            user = User.objects.get(username=username, email=email)
+            
+            # Update password
+            user.password = make_password(new_password)
+            user.save()
+            
+            messages.success(request, 
+                "✅ Password changed successfully! You can now login with your new password."
+            )
+            return redirect('login')
+            
+        except User.DoesNotExist:
+            messages.error(request, "Username and email do not match")
+    
+    return render(request, 'forgot_password.html')
+
+@staff_member_required
+def system_report(request):
+    """Generate comprehensive system status report"""
+    today = timezone.now()
+    thirty_days_ago = today - timedelta(days=30)
+    seven_days_ago = today - timedelta(days=7)
+    
+    # User Statistics
+    total_users = User.objects.count()
+    premium_users = User.objects.filter(profile__is_premium=True).count()
+    free_users = total_users - premium_users
+    new_users = User.objects.filter(date_joined__gte=thirty_days_ago).count()
+    active_users = User.objects.filter(last_login__gte=seven_days_ago).count()
+    
+    # Premium Subscriptions
+    from .models import PremiumSubscription
+    active_premium = PremiumSubscription.objects.filter(
+        is_active=True,
+        ends_at__gte=today.date()
+    ).count()
+    
+    expiring_soon = PremiumSubscription.objects.filter(
+        is_active=True,
+        ends_at__gte=today.date(),
+        ends_at__lte=today.date() + timedelta(days=3)
+    ).count()
+    
+    expired_but_marked = User.objects.filter(
+        profile__is_premium=True
+    ).exclude(
+        premium_subscriptions__is_active=True,
+        premium_subscriptions__ends_at__gte=today.date()
+    ).count()
+    
+    # Calculate average premium duration
+    active_subs = PremiumSubscription.objects.filter(is_active=True)
+    if active_subs.exists():
+        avg_duration = active_subs.aggregate(
+            avg_days=Avg('days_remaining')
+        )['avg_days'] or 0
+        avg_duration = round(avg_duration, 1)
+    else:
+        avg_duration = 0
+    
+    # Revenue & Payments
+    from .models import Payment
+    total_payments = Payment.objects.count()
+    
+    # Check if Payment model has 'status' field
+    try:
+        approved_payments = Payment.objects.filter(status='approved').count()
+        pending_payments = Payment.objects.filter(status='pending').count()
+    except:
+        # If no status field, check via premium subscription
+        approved_payments = PremiumSubscription.objects.filter(payment__isnull=False).count()
+        pending_payments = Payment.objects.count() - approved_payments
+    
+    # Calculate revenue (assume ₹1000 per premium)
+    total_revenue = approved_payments * 1000
+    recent_revenue = new_users * 1000  # Simplified calculation
+    
+    # Course Usage (simplified - adjust based on your models)
+    from .models import Course
+    total_courses = Course.objects.count()
+    
+    context = {
+        'report_date': today,
+        'total_users': total_users,
+        'premium_users': premium_users,
+        'free_users': free_users,
+        'new_users': new_users,
+        'active_users': active_users,
+        'active_premium': active_premium,
+        'expiring_soon': expiring_soon,
+        'expired_but_marked': expired_but_marked,
+        'avg_duration': avg_duration,
+        'total_payments': total_payments,
+        'approved_payments': approved_payments,
+        'pending_payments': pending_payments,
+        'total_revenue': total_revenue,
+        'recent_revenue': recent_revenue,
+        'total_courses': total_courses,
+        'premium_percentage': (premium_users / total_users * 100) if total_users > 0 else 0,
+        'approval_percentage': (approved_payments / total_payments * 100) if total_payments > 0 else 0,
+    }
+    
+    return render(request, 'admin/system_report.html', context)

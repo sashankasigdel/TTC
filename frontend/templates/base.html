@@ -53,7 +53,7 @@
 </style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}The Tuition Class - Online Learning Platform{% endblock %}</title>
+  <title>{% block title %}Adhyayan - Online Learning Platform{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -100,35 +100,38 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="navbar">
       <div class="logo">
         <i class="fas fa-graduation-cap"></i>
-        <span>The Tuition Class</span>
+        <span>Adhyayan</span>
       </div>
       <nav id="nav-links">
         <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
         <a href="{% url 'courses_page' %}">Courses</a>
         <a href="#news">News</a>
-        <a href="#">Tools</a>
         <a href="#about">About Us</a>
        <!-- In your base.html navbar, update the login section -->
 {% if user.is_authenticated %}
-<div class="user-menu">
-  <a href="#" class="btn-login">
-    <i class="fas fa-user"></i> {{ user.username }}
-    
-    <!-- Crown emoji for premium users -->
-    {% if user.profile.is_premium %}
-    👑
+    {% if not user.is_staff %}
+        <!-- Regular user only -->
+        <div class="user-menu">
+            <a href="#" class="btn-login">
+                <i class="fas fa-user"></i> {{ user.username }}
+                {% if user.profile.is_premium %}👑{% endif %}
+            </a>
+            <div class="user-dropdown">
+                <a href="{% url 'user_profile' %}"><i class="fas fa-user-circle"></i> My Profile</a>
+                <a href="/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- Admin user - show nothing or login button -->
+        <a href="{% url 'login' %}" class="btn-login">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
     {% endif %}
-    
-  </a>
-  <div class="user-dropdown">
-    <a href="/profile/"><i class="fas fa-user-circle"></i> My Profile</a>
-    <a href="/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
-  </div>
-</div>
 {% else %}
-<a href="{% url 'login' %}" class="btn-login">
-  <i class="fas fa-sign-in-alt"></i> Login
-</a>
+    <!-- Not authenticated -->
+    <a href="{% url 'login' %}" class="btn-login">
+        <i class="fas fa-sign-in-alt"></i> Login
+    </a>
 {% endif %}
       </nav>
       <div class="menu-toggle" id="menu-toggle">
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="footer-section">
           <div class="logo">
             <i class="fas fa-graduation-cap"></i>
-            <span>The Tuition Class</span>
+            <span>Adhyayan</span>
           </div>
           <p>Your trusted online learning platform for SEE, +2, and BBS/MBS students.</p>
         </div>
@@ -182,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
           <h3>Contact Us</h3>
           <ul>
             <li><i class="fas fa-map-marker-alt"></i> Pokhara, Nepal</li>
-            <li><i class="fas fa-phone"></i> +977 </li>
+            <li><i class="fas fa-phone"></i> +977 9745289791 </li>
             <li><i class="fas fa-envelope"></i> thetuitionclass01@gmail.com</li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 The Tuition Class. All Rights Reserved.</p>
+        <p>&copy; 2025 Adhyayan. All Rights Reserved.</p>
       </div>
     </div>
   </footer>

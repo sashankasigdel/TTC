@@ -2,13 +2,14 @@
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 import logging
+from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
 def send_otp_email(email, otp):
     """Send REAL OTP email - NO CONSOLE FALLBACK"""
     
-    subject = "🔐 Verify Your Email - The Tuition Class"
+    subject = "🔐 Verify Your Email - Adhyayan"
     
     # Professional HTML email
     html_content = f"""
@@ -107,7 +108,7 @@ def send_otp_email(email, otp):
             <div class="header">
                 <h1>
                     <span>📚</span>
-                    The Tuition Class
+                    Adhyayan
                 </h1>
                 <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 18px;">
                     Complete Your Registration
@@ -119,7 +120,7 @@ def send_otp_email(email, otp):
                 <h2 style="color: #2d3748; margin-top: 0;">Hello Future Learner! 👋</h2>
                 
                 <p style="font-size: 16px; line-height: 1.7;">
-                    Welcome to <strong>The Tuition Class</strong> - your trusted online learning platform! 
+                    Welcome to <strong>Adhyayan</strong> - your trusted online learning platform! 
                     We're excited to have you join our community of students.
                 </p>
                 
@@ -165,7 +166,7 @@ def send_otp_email(email, otp):
             <!-- Footer -->
             <div class="footer">
                 <p style="margin: 0 0 10px 0;">
-                    <strong>The Tuition Class</strong><br>
+                    <strong>Adhyayan</strong><br>
                     Pokhara, Nepal
                 </p>
                 <p style="margin: 5px 0; font-size: 13px;">
@@ -173,7 +174,7 @@ def send_otp_email(email, otp):
                     📞 +977 9745289791
                 </p>
                 <p style="margin: 15px 0 0 0; font-size: 12px; color: #a0aec0;">
-                    © 2025 The Tuition Class. Empowering education through technology.
+                    © 2025 Adhyayan. Empowering education through technology.
                 </p>
             </div>
         </div>
@@ -183,9 +184,9 @@ def send_otp_email(email, otp):
     
     # Plain text version for email clients
     plain_text = f"""
-    THE TUITION CLASS - EMAIL VERIFICATION
+    ADHYAYAN - EMAIL VERIFICATION
     
-    Welcome to The Tuition Class!
+    Welcome to ADHYAYAN!
     
     Your verification code is: {otp}
     
@@ -205,7 +206,7 @@ def send_otp_email(email, otp):
     Email: thetuitionclass01@gmail.com
     Phone: +977 9745289791
     
-    © 2025 The Tuition Class
+    © 2025 ADHYAYAN
     Pokhara, Nepal
     """
     
@@ -241,3 +242,81 @@ def send_otp_email(email, otp):
         
         # NO CONSOLE FALLBACK - Let it fail
         raise Exception(f"Failed to send email: {str(e)}")
+    
+def send_premium_expired_email(user, expiry_date):
+    """Send email when premium subscription expires"""
+    
+    subject = "📚 Your Premium Access Has Ended - ADHYAYAN"
+    
+    context = {
+        'user': user,
+        'expiry_date': expiry_date,
+    }
+    
+    # Render HTML email from template
+    html_content = render_to_string('emails/premium_expired.html', context)
+    
+    # Plain text version
+    plain_text = f"""
+    ADHYAYAN - PREMIUM ACCESS ENDED
+    
+    Hello {user.username},
+    
+    Your premium subscription for ADHYAYAN has ended.
+    
+    Expiration Date: {expiry_date.strftime('%B %d, %Y')}
+    
+    With the end of your premium access:
+    • PDF downloads are now restricted
+    • Video lectures are no longer accessible
+    • Full course access has been limited
+    • Free content remains available
+    
+    To continue enjoying unlimited access to all study materials:
+    http://127.0.0.1:8000/premium/
+    
+    Thank you for being a premium member! We hope you enjoyed the unlimited 
+    access and found it valuable for your studies.
+    
+    If you have any questions or need assistance, please contact us.
+    
+    Best regards,
+    ADHYAYAN Team
+    
+    Email: thetuitionclass01@gmail.com
+    Phone: +977 9745289791
+    
+    © {expiry_date.year} ADHYAYAN. All rights reserved.
+    """
+    
+    try:
+        # Create email
+        email_msg = EmailMultiAlternatives(
+            subject=subject,
+            body=plain_text,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[user.email],
+            reply_to=['thetuitionclass01@gmail.com'],
+            headers={
+                'X-Priority': '1',
+                'Importance': 'High',
+                'X-Auto-Response-Suppress': 'OOF, AutoReply',
+            }
+        )
+        
+        # Attach HTML version
+        email_msg.attach_alternative(html_content, "text/html")
+        
+        # Send it
+        email_msg.send(fail_silently=False)
+        
+        print(f"✅ PREMIUM EXPIRED EMAIL SENT to: {user.email}")
+        print(f"📅 Expired on: {expiry_date}")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ PREMIUM EMAIL FAILED for {user.email}")
+        print(f"Error: {str(e)}")
+        logger.error(f"Failed to send premium expired email to {user.email}: {str(e)}")
+        return False
