@@ -1,0 +1,218 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+ 
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="/static/admin/css/custom.css">
+{% endblock %}
+ 
+{% block content %}
+ 
+{# ── Page header ───────────────────────────────────────────────────────────── #}
+<div class="dash-header">
+  <div>
+    <h1 class="dash-title">Dashboard</h1>
+    <p class="dash-sub">Here's what's happening with your platform today.</p>
+  </div>
+  <a href="/admin/notes/premiumsubscription/system-report/" class="dash-report-btn">
+    <i class="ti ti-chart-bar"></i> Full System Report
+  </a>
+</div>
+ 
+{# ── Stats row ─────────────────────────────────────────────────────────────── #}
+<div class="stats-grid">
+ 
+  <div class="stat-card">
+    <div class="stat-icon-wrap stat-blue">
+      <i class="ti ti-users"></i>
+    </div>
+    <div class="stat-body">
+      <div class="stat-label">Total users</div>
+      <div class="stat-value">{{ total_users|default:"0" }}</div>
+      <div class="stat-sub positive">+{{ new_users_month|default:"0" }} this month</div>
+    </div>
+  </div>
+ 
+  <div class="stat-card">
+    <div class="stat-icon-wrap stat-gold">
+      <i class="ti ti-crown"></i>
+    </div>
+    <div class="stat-body">
+      <div class="stat-label">Premium users</div>
+      <div class="stat-value">{{ premium_users|default:"0" }}</div>
+      <div class="stat-sub neutral">{{ premium_percentage|default:"0" }}% of users</div>
+    </div>
+  </div>
+ 
+  <div class="stat-card">
+    <div class="stat-icon-wrap stat-red">
+      <i class="ti ti-clock-exclamation"></i>
+    </div>
+    <div class="stat-body">
+      <div class="stat-label">Expiring soon</div>
+      <div class="stat-value">{{ expiring_soon_count|default:"0" }}</div>
+      <div class="stat-sub {% if expiring_soon_count > 0 %}warning{% else %}positive{% endif %}">
+        Within 3 days
+      </div>
+    </div>
+  </div>
+ 
+  <div class="stat-card">
+    <div class="stat-icon-wrap stat-amber">
+      <i class="ti ti-credit-card"></i>
+    </div>
+    <div class="stat-body">
+      <div class="stat-label">Pending payments</div>
+      <div class="stat-value">{{ pending_payments_count|default:"0" }}</div>
+      <div class="stat-sub {% if pending_payments_count > 0 %}warning{% else %}positive{% endif %}">
+        Awaiting approval
+      </div>
+    </div>
+  </div>
+ 
+  <div class="stat-card">
+    <div class="stat-icon-wrap stat-green">
+      <i class="ti ti-currency-rupee"></i>
+    </div>
+    <div class="stat-body">
+      <div class="stat-label">Est. revenue</div>
+      <div class="stat-value">₹{{ estimated_revenue|default:"0" }}</div>
+      <div class="stat-sub positive">₹{{ monthly_revenue|default:"0" }} this month</div>
+    </div>
+  </div>
+ 
+  <div class="stat-card">
+    <div class="stat-icon-wrap stat-teal">
+      <i class="ti ti-books"></i>
+    </div>
+    <div class="stat-body">
+      <div class="stat-label">Total chapters</div>
+      <div class="stat-value">{{ total_chapters|default:"0" }}</div>
+      <div class="stat-sub neutral">Across {{ total_courses|default:"0" }} courses</div>
+    </div>
+  </div>
+ 
+</div>
+ 
+{# ── Two-column widgets ────────────────────────────────────────────────────── #}
+<div class="dash-widgets">
+ 
+  {# Pending payments #}
+  <div class="dash-widget">
+    <div class="widget-head">
+      <span class="widget-title">
+        <i class="ti ti-credit-card"></i> Pending payments
+        {% if pending_payments_count > 0 %}
+          <span class="widget-badge">{{ pending_payments_count }}</span>
+        {% endif %}
+      </span>
+      <a href="/admin/notes/payment/" class="widget-see-all">See all →</a>
+    </div>
+    <div class="widget-body">
+      {% if pending_payment_list %}
+        {% for payment in pending_payment_list %}
+        <div class="widget-row">
+          <div class="widget-avatar">{{ payment.user.username|first|upper }}</div>
+          <div class="widget-info">
+            <div class="widget-name">{{ payment.user.username }}</div>
+            <div class="widget-meta">
+              {{ payment.email|default:payment.user.email }}
+              · {{ payment.submitted_at|timesince }} ago
+            </div>
+          </div>
+          <a href="/admin/notes/payment/{{ payment.id }}/approve/"
+             class="widget-action-btn widget-approve">Approve</a>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="widget-empty">
+          <i class="ti ti-circle-check"></i>
+          <span>No pending payments</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+ 
+  {# Expiring subscriptions #}
+  <div class="dash-widget">
+    <div class="widget-head">
+      <span class="widget-title">
+        <i class="ti ti-crown"></i> Expiring subscriptions
+        {% if expiring_soon_count > 0 %}
+          <span class="widget-badge widget-badge-amber">{{ expiring_soon_count }}</span>
+        {% endif %}
+      </span>
+      <a href="/admin/notes/premiumsubscription/" class="widget-see-all">See all →</a>
+    </div>
+    <div class="widget-body">
+      {% if expiring_subs_list %}
+        {% for sub in expiring_subs_list %}
+        <div class="widget-row">
+          <div class="widget-avatar widget-avatar-gold">{{ sub.user.username|first|upper }}</div>
+          <div class="widget-info">
+            <div class="widget-name">{{ sub.user.username }}</div>
+            <div class="widget-meta">{{ sub.user.email }} · expires {{ sub.ends_at }}</div>
+          </div>
+          {% with days=sub.days_remaining %}
+            {% if days <= 1 %}
+              <span class="days-badge days-red">{{ days }}d</span>
+            {% elif days <= 3 %}
+              <span class="days-badge days-amber">{{ days }}d</span>
+            {% else %}
+              <span class="days-badge days-green">{{ days }}d</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="widget-empty">
+          <i class="ti ti-circle-check"></i>
+          <span>No subscriptions expiring soon</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+ 
+</div>
+ 
+{# ── Quick actions ─────────────────────────────────────────────────────────── #}
+<div class="quick-actions">
+  <div class="widget-head" style="padding:0 0 14px">
+    <span class="widget-title"><i class="ti ti-bolt"></i> Quick actions</span>
+  </div>
+  <div class="quick-grid">
+    <a href="/admin/notes/course/add/" class="quick-card">
+      <div class="quick-icon qi-purple"><i class="ti ti-book-plus"></i></div>
+      <div class="quick-label">Add course</div>
+      <div class="quick-desc">Create a new course</div>
+    </a>
+    <a href="/admin/notes/chapter/add/" class="quick-card">
+      <div class="quick-icon qi-teal"><i class="ti ti-file-plus"></i></div>
+      <div class="quick-label">Add chapter</div>
+      <div class="quick-desc">Upload new content</div>
+    </a>
+    <a href="/admin/notes/premiumsubscription/?is_active__exact=1" class="quick-card">
+      <div class="quick-icon qi-gold"><i class="ti ti-crown"></i></div>
+      <div class="quick-label">Active premium</div>
+      <div class="quick-desc">View all subscribers</div>
+    </a>
+    <a href="/admin/notes/premiumsubscription/system-report/" class="quick-card">
+      <div class="quick-icon qi-blue"><i class="ti ti-chart-bar"></i></div>
+      <div class="quick-label">System report</div>
+      <div class="quick-desc">Full analytics</div>
+    </a>
+    <a href="/admin/auth/user/add/" class="quick-card">
+      <div class="quick-icon qi-green"><i class="ti ti-user-plus"></i></div>
+      <div class="quick-label">Add user</div>
+      <div class="quick-desc">Create new account</div>
+    </a>
+    <a href="/admin/notes/premiumsubscription/?is_active__exact=1&ends_at__lte=3" class="quick-card">
+      <div class="quick-icon qi-red"><i class="ti ti-clock-exclamation"></i></div>
+      <div class="quick-label">Expiring subs</div>
+      <div class="quick-desc">Review & extend</div>
+    </a>
+  </div>
+</div>
+ 
+{% endblock %}
+ 

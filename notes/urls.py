@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     # Home - using universal_page with explicit 'index'
-    path('', views.universal_page, name='home'),
+    path('', views.home_view, name='home'),
     
     # Auth
     path('register/', views.register_view, name='register'),

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to Adhyayan</h1>
+    <p>Learn anywhere, anytime — your trusted online learning platform for +2, and BBS/MBS students.</p>
+    <div class="hero-buttons">
+      <a href="{% url 'courses_page' %}" class="btn btn-primary">Explore Courses</a>
+      <a href="#" class="btn btn-secondary">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23f0f7ff'/%3E%3Ccircle cx='300' cy='200' r='150' fill='%234299e1' opacity='0.1'/%3E%3Cpath d='M150,150 Q300,100 450,150 L450,250 Q300,300 150,250 Z' fill='%234299e1' opacity='0.2'/%3E%3Ccircle cx='200' cy='180' r='40' fill='%234299e1' opacity='0.3'/%3E%3Ccircle cx='400' cy='220' r='40' fill='%234299e1' opacity='0.3'/%3E%3C/svg%3E" alt="Online Learning">
+  </div>
+</section>
+
+<!-- Courses Section -->
+<section id="courses" class="courses">
+  <div class="container">
+    <h2 class="section-title">Our Courses</h2>
+    <p class="section-subtitle">Comprehensive learning materials for various academic levels</p>
+    
+    <div class="course-categories">
+      <div class="category">
+        <h3>+2 Level</h3>
+        <div class="course-boxes">
+          <div class="course-card">
+            <div class="course-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h4>Grade 11 Economics</h4>
+            <p>Comprehensive video lectures, notes, and summaries for NEB Grade 11 Economics.</p>
+            
+          </div>
+          <div class="course-card">
+            <div class="course-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <h4>Grade 12 Economics</h4>
+            <p>Complete syllabus coverage with solved questions and exam preparation materials.</p>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="category">
+        <h3>Bachelor Level (BBS)</h3>
+        <div class="course-boxes">
+          <div class="course-card">
+            <div class="course-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <h4>BBS 1st Year</h4>
+            <p>Detailed explanation and solved questions for BBS 1st Year Economics syllabus.</p>
+            
+          </div>
+          <div class="course-card">
+            <div class="course-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <h4>BBS 2nd Year</h4>
+            <p>Advanced economic theories and practical applications with case studies.</p>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="category">
+        <h3>Master Level (MBS)</h3>
+        <div class="course-boxes">
+          <div class="course-card">
+            <div class="course-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h4>MBS 1st Semester</h4>
+            <p>Advanced managerial economics concepts with real-world business applications.</p>
+            
+          </div>
+          <div class="course-card">
+            <div class="course-icon">
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <h4>MBS 2nd Semester</h4>
+            <p>Specialized economic analysis techniques and research methodology.</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{% url 'courses_page' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-book"></i> View All Courses
+        </a>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="container">
+    <h2 class="section-title">Why Choose Adhyayan?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <h3>Recorded Lectures</h3>
+        <p>Access high-quality video lectures anytime, anywhere at your own pace.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3>Study Materials</h3>
+        <p>Comprehensive notes, summaries, and practice questions for every topic.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h3>Mobile Friendly</h3>
+        <p>Study on any device - desktop, tablet, or smartphone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- News Section -->
+<section id="news" class="news">
+  <div class="container">
+    <h2 class="section-title">Latest News & Announcements</h2>
+    <p class="section-subtitle">Stay updated with the latest notices and announcements from Adhyayan.</p>
+    
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-date">May 15, 2025</div>
+        <h3>New Grade 12 Economics Materials Added</h3>
+        <p>We've updated our Grade 12 Economics course with new video lectures and practice questions for the upcoming board exams.</p>
+        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">April 28, 2025</div>
+        <h3>Summer Enrollment Now Open</h3>
+        <p>Enroll in our summer courses for SEE, +2, and BBS students. Special discounts available for early registration.</p>
+        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="news-card">
+        <div class="news-date">April 10, 2025</div>
+        <h3>MBS 1st Semester Course Launched</h3>
+        <p>We're excited to announce our new MBS 1st Semester course with comprehensive study materials and expert guidance.</p>
+        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    
+    <div class="text-center">
+      <a href="/news/" class="btn btn-primary">View All News</a>
+    </div>
+  </div>
+</section>
+
+<!-- About Us Section -->
+<section id="about" class="about">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-text">
+        <h2 class="section-title">About Adhyayan</h2>
+        <p>
+          Adhyayan is an online education platform dedicated to helping students prepare effectively for their exams. We provide recorded lessons, study materials, and expert guidance for SEE, +2, and BBS/MBS students.
+        </p>
+        <p>
+          Our mission is to make quality education accessible to all students, regardless of their location or economic background. With our comprehensive learning resources and flexible study options, students can learn at their own pace and achieve academic success.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <h3>50+</h3>
+            <p>Students Enrolled</p>
+          </div>
+          <div class="stat">
+            <h3>10+</h3>
+            <p>Courses Available</p>
+          </div>
+          <div class="stat">
+            
+          </div>
+        </div>
+        <a href="" class="btn btn-primary">Learn More About Us</a>
+      </div>
+      <div class="about-image">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 400'%3E%3Crect width='500' height='400' fill='%23f8f9fa'/%3E%3Ccircle cx='250' cy='200' r='120' fill='%234299e1' opacity='0.1'/%3E%3Cpath d='M150,150 Q250,100 350,150 L350,250 Q250,300 150,250 Z' fill='%234299e1' opacity='0.2'/%3E%3Ccircle cx='200' cy='180' r='30' fill='%234299e1' opacity='0.3'/%3E%3Ccircle cx='300' cy='220' r='30' fill='%234299e1' opacity='0.3'/%3E%3C/svg%3E" alt="About Us">
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

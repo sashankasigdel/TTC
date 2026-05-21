@@ -63,7 +63,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'frontend/templates',  # Your HTML files
+            BASE_DIR / 'templates',  # Your HTML files
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -131,73 +131,113 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/media')
 
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
-    # Title on the brand (19 chars max)
-    "site_brand": "ADHYAYAN Admin",
-    
-    # Logo to use for your site, must be present in static files
-    "site_logo": "books.ico",
-    
-    # Welcome text on the login screen
-    "welcome_sign": "Welcome to The Adhyayan Admin Panel",
-    
-    # Copyright on the footer
-    "copyright": "ADHYAYAN ",
-    
-    # The model admin to search from the search bar
-    "search_model": "auth.User",
-    
-    # Field name on user model that contains avatar image
-    "user_avatar": None,
-    
-'custom_links': {
-        'notes': [{
-            'name': 'View Website',
-            'url': '/',
-            'icon': 'fas fa-external-link-alt',
-            'permissions': ['notes.view_course']
-        }]
-    },
-
-
-    # Top Menu Links
+    "custom_css": "admin/css/custom.css",
+    # ── Branding ──────────────────────────────────────────────────────────────
+    "site_title": "Notes Admin",
+    "site_header": "Notes",
+    "site_brand": "Notes",
+    "site_logo": None,                   # e.g. "admin/img/logo.png"
+    "login_logo": None,
+    "site_icon": None,
+    "welcome_sign": "Welcome back 👋",
+    "copyright": "Notes App",
+ 
+    # ── Top navigation links ───────────────────────────────────────────────────
     "topmenu_links": [
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"name": "Website", "url": "/", "new_window": True},
-        {"model": "auth.User"},
-        {"app": "notes"},
+        {"name": "Dashboard",      "url": "admin:index",        "permissions": ["auth.view_user"]},
+        {"name": "System Report",  "url": "/admin/notes/premiumsubscription/system-report/"},
+        {"name": "View Site",      "url": "/",                  "new_window": True},
     ],
-    
-    # Custom icons for side menu apps/models
+ 
+    # ── User menu (top-right avatar dropdown) ─────────────────────────────────
+    "usermenu_links": [
+        {"name": "View Site", "url": "/", "new_window": True, "icon": "ti ti-external-link"},
+    ],
+ 
+    # ── Sidebar icons (app_label.ModelName) ───────────────────────────────────
     "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-        "notes": "fas fa-sticky-note",
+        "auth":                        "ti ti-shield",
+        "auth.user":                   "ti ti-users",
+        "auth.group":                  "ti ti-shield-half",
+        "notes.userprofile":           "ti ti-user-check",
+        "notes.course":                "ti ti-book",
+        "notes.subject":               "ti ti-notes",
+        "notes.chapter":               "ti ti-file-text",
+        "notes.payment":               "ti ti-credit-card",
+        "notes.premiumsubscription":   "ti ti-crown",
     },
-    
-    # Icons that are used when one is not manually specified
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    
-    # UI Tweaks
-    "show_ui_builder": True,  # Allows customizing the UI
-    
-    # Change default theme
-    "theme": "darkly",  # You can try: "darkly", "flatly", "slate", "solar", "superhero"
-    
-    # Custom links on the side menu
-    "custom_links": {
-        "notes": [{
-            "name": "View Website", 
-            "url": "/", 
-            "icon": "fas fa-external-link-alt",
-            "permissions": ["auth.view_user"]
-        }]
-    },
+    "default_icon_parents":  "ti ti-folder",
+    "default_icon_children": "ti ti-circle",
+ 
+    # ── Sidebar ordering ──────────────────────────────────────────────────────
+    "order_with_respect_to": [
+        "notes",
+        "notes.payment",
+        "notes.premiumsubscription",
+        "notes.userprofile",
+        "notes.course",
+        "notes.subject",
+        "notes.chapter",
+        "auth",
+    ],
+ 
+    # ── Hide anything you don't need ──────────────────────────────────────────
+    "hide_apps":   [],
+    "hide_models": [],
+ 
+    # ── UI behaviour ──────────────────────────────────────────────────────────
+    "show_sidebar":           True,
+    "navigation_expanded":    True,
+    "changeform_format":      "horizontal_tabs",   # cleaner edit pages
+    "related_modal_active":   True,                # open related objects in a modal
+    "show_ui_builder":        False,               # hide the UI builder in production
+ 
+    # ── Search ────────────────────────────────────────────────────────────────
+    "search_model": ["auth.user", "notes.payment", "notes.premiumsubscription"],
 }
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+ 
+JAZZMIN_UI_TWEAKS = {
+    # ── Navbar ────────────────────────────────────────────────────────────────
+    "navbar_small_text":  False,
+    "navbar":             "navbar-dark",
+    "no_navbar_border":   True,
+    "navbar_fixed":       True,           # sticks to top while scrolling
+ 
+    # ── Sidebar ───────────────────────────────────────────────────────────────
+    "sidebar":                    "sidebar-dark-primary",
+    "sidebar_fixed":              True,
+    "sidebar_nav_small_text":     False,
+    "sidebar_nav_child_indent":   True,
+    "sidebar_nav_compact_style":  True,
+    "sidebar_nav_flat_style":     False,
+    "sidebar_disable_expand":     False,
+ 
+    # ── Brand ─────────────────────────────────────────────────────────────────
+    "brand_colour":       "navbar-dark",
+    "brand_small_text":   False,
+ 
+    # ── Body ──────────────────────────────────────────────────────────────────
+    "body_small_text":    False,
+    "footer_small_text":  False,
+    "footer_fixed":       False,
+    "layout_boxed":       False,
+ 
+    # ── Accent & theme ────────────────────────────────────────────────────────
+    "accent": "accent-primary",
+    "theme":  "default",          # base AdminLTE theme; our CSS overrides on top
+ 
+    # ── Button classes ────────────────────────────────────────────────────────
+    "button_classes": {
+        "primary":   "btn-primary",
+        "secondary": "btn-outline-secondary",
+        "info":      "btn-info",
+        "warning":   "btn-warning",
+        "danger":    "btn-danger",
+        "success":   "btn-success",
+    },
+ 
+    # ── Actions bar ───────────────────────────────────────────────────────────
+    "actions_sticky_top": True,
+}
 
 

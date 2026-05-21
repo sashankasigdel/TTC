@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">{{ subject.title }}</h1>
+        <p class="page-subtitle">{{ subject.description }}</p>
+    </div>
+
+    <!-- Chapters Grid (Your Original Multi-View Design) -->
+    <div class="chapters-grid">
+        {% for chapter in chapters %}
+        <div class="chapter-card">
+            <div class="chapter-number">{{ forloop.counter }}</div>
+            <h3 class="chapter-title">{{ chapter.title }}</h3>
+            <p class="chapter-description">{{ chapter.content|truncatewords:15 }}</p>
+            
+            <!-- Chapter Actions - MINIMAL CHANGES FOR PREMIUM -->
+            <div class="chapter-actions">
+                <!-- Study Chapter (Enhanced PDF Viewer) - UNCHANGED -->
+                {% if chapter.pdf_file %}
+                <a href="{% url 'study_chapter' course.slug subject.slug chapter.slug %}" class="btn btn-primary">
+                    <i class="fas fa-book-open"></i> Study Chapter
+                </a>
+                {% else %}
+                <button class="btn btn-primary" disabled title="PDF not available yet">
+                    <i class="fas fa-book-open"></i> Study Chapter
+                </button>
+                {% endif %}
+                
+                <!-- View/Download PDF (ADDED PREMIUM CHECK) -->
+                {% if chapter.pdf_file %}
+                    {% if user.is_authenticated and user.profile.is_premium %}
+                    <!-- Premium users get download link -->
+                    <a href="{{ chapter.pdf_file.url }}" 
+                       class="btn btn-secondary" 
+                       target="_blank"
+                       download="{{ chapter.title|slugify }}.pdf">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </a>
+                    {% else %}
+                    <!-- Non-premium users see locked button with popup -->
+                    <button type="button" 
+                            class="btn btn-secondary premium-locked" 
+                            data-chapter-title="{{ chapter.title }}">
+                        <i class="fas fa-lock"></i> Download PDF
+                    </button>
+                    {% endif %}
+                {% else %}
+                <button class="btn btn-secondary" disabled title="PDF not available yet">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                {% endif %}
+                
+                <!-- Watch Video (ADDED PREMIUM CHECK) -->
+                {% if chapter.video_url %}
+                    {% if user.is_authenticated and user.profile.is_premium %}
+                    <!-- Premium users get video link -->
+                    <a href="{{ chapter.video_url }}" class="btn btn-accent" target="_blank">
+                        <i class="fas fa-video"></i> Watch Video
+                    </a>
+                    {% else %}
+                    <!-- Non-premium users see locked button with popup -->
+                    <button type="button" 
+                            class="btn btn-accent premium-locked" 
+                            data-chapter-title="{{ chapter.title }}">
+                        <i class="fas fa-lock"></i> Watch Video
+                    </button>
+                    {% endif %}
+                {% else %}
+                <button class="btn btn-accent" disabled title="Video not available yet">
+                    <i class="fas fa-video"></i> Watch Video
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-chapters">
+            <i class="fas fa-book fa-4x"></i>
+            <h3>No Chapters Available Yet</h3>
+            <p>Chapters will be added to this subject soon.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Navigation -->
+    <div class="subject-navigation mt-5">
+        <a href="{% url 'course_detail' course.slug %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Subjects
+        </a>
+        <a href="{% url 'courses_page' %}" class="btn btn-outline">
+            <i class="fas fa-list"></i> All Courses
+        </a>
+    </div>
+</div>
+
+<!-- PREMIUM MODAL (ADD THIS AT THE END) -->
+<div id="premiumModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; border-radius: 12px; padding: 30px; max-width: 400px; width: 90%; position: relative;">
+        <button onclick="hidePremiumModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">
+            &times;
+        </button>
+        
+        <div style="text-align: center;">
+            <div style="font-size: 40px; color: #f6ad55; margin-bottom: 10px;">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #333;">Premium Feature Locked</h3>
+            <p style="color: #666; margin-bottom: 20px;" id="modalChapterText">
+                Upgrade to premium to access this feature
+            </p>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <i class="fas fa-check" style="color: #38a169; margin-right: 10px;"></i>
+                    <span>Download all PDFs</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <i class="fas fa-check" style="color: #38a169; margin-right: 10px;"></i>
+                    <span>Watch video lectures</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <i class="fas fa-check" style="color: #38a169; margin-right: 10px;"></i>
+                    <span>Full access for 30 Days</span>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #4299e1, #3182ce); color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <div style="font-size: 32px; font-weight: bold;">Rs.200</div>
+                <div>One-time payment</div>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="hidePremiumModal()" style="flex: 1; padding: 12px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">
+                    Maybe Later
+                </button>
+                <a href="{% url 'premium' %}" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #38a169, #2f855a); color: white; text-align: center; border-radius: 6px; text-decoration: none; font-weight: 600;">
+                    Get Premium
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Your Original CSS (UNCHANGED) -->
+<style>
+    /* Page Header */
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+    
+    .page-subtitle {
+        color: var(--secondary-color);
+        max-width: 700px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+    }
+    
+    /* Chapters Grid - Your Original Design */
+    .chapters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .chapter-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .chapter-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .chapter-number {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
+    }
+    
+    .chapter-title {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        font-size: 1.3rem;
+    }
+    
+    .chapter-description {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        min-height: 60px;
+        line-height: 1.6;
+    }
+    
+    .chapter-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .chapter-actions .btn {
+        flex: 1;
+        min-width: 120px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .btn-accent {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+    }
+    
+    .btn-accent:hover {
+        background-color: #dd6b20;
+        color: white;
+    }
+    
+    .empty-chapters {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 15px;
+    }
+    
+    .empty-chapters i {
+        color: var(--gray-light);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-chapters h3 {
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-chapters p {
+        color: var(--secondary-color);
+    }
+    
+    .subject-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--gray-light);
+    }
+    
+    @media (max-width: 768px) {
+        .chapters-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .chapter-actions {
+            flex-direction: column;
+        }
+        
+        .chapter-actions .btn {
+            width: 100%;
+        }
+        
+        .subject-navigation {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .subject-navigation .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<!-- ADD THIS JAVASCRIPT (at the very end) -->
+<script>
+// Premium modal functions
+function showPremiumModal(chapterTitle) {
+    const modal = document.getElementById('premiumModal');
+    const modalText = document.getElementById('modalChapterText');
+    
+    if (chapterTitle) {
+        modalText.textContent = `Upgrade to premium to access: "${chapterTitle}"`;
+    } else {
+        modalText.textContent = 'Upgrade to premium to access this feature';
+    }
+    
+    modal.style.display = 'flex';
+}
+
+function hidePremiumModal() {
+    document.getElementById('premiumModal').style.display = 'none';
+}
+
+// Add event listeners to premium locked buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const lockedButtons = document.querySelectorAll('.premium-locked');
+    
+    lockedButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const chapterTitle = this.getAttribute('data-chapter-title');
+            showPremiumModal(chapterTitle);
+        });
+    });
+    
+    // Close modal when clicking outside
+    document.getElementById('premiumModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hidePremiumModal();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hidePremiumModal();
+        }
+    });
+});
+</script>
+{% endblock %}

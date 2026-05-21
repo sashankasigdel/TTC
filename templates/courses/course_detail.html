@@ -1,0 +1,265 @@
+<!-- templates/courses/course_detail.html - ORIGINAL FLOATING CARD DESIGN -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Course Header -->
+    <div class="course-header mb-5">
+        <h1 class="page-title">{{ course.title }}</h1>
+        <p class="page-subtitle">{{ course.description }}</p>
+        <div class="course-level-badge">
+            <i class="fas fa-level-up-alt"></i> {{ course.get_level_display }}
+        </div>
+    </div>
+    
+    <!-- Subjects Section -->
+    <div class="section-header mb-4">
+        <h2 class="section-title">Subjects</h2>
+        <p class="section-subtitle">Select a subject to start learning</p>
+    </div>
+    
+    <!-- Subjects Grid - Original Floating Cards -->
+    <div class="course-boxes">
+        {% for subject in subjects %}
+        <div class="course-card">
+            <div class="course-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <h3 class="course-card-title">{{ subject.title }}</h3>
+            <p class="course-card-description">{{ subject.description|truncatewords:20 }}</p>
+            
+            <div class="course-meta">
+                <span class="meta-item">
+                    <i class="fas fa-file-alt"></i> {{ subject.chapter_count }} Chapter{{ subject.chapter_count|pluralize }}
+                </span>
+            </div>
+            
+            <div class="course-actions">
+                <a href="{% url 'subject_detail' course.slug subject.slug %}" class="btn btn-outline-primary">
+                    <i class="fas fa-book-open"></i> View Chapters
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3>No Subjects Available</h3>
+            <p>Subjects will be added to this course soon.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Navigation -->
+    <div class="navigation-buttons mt-5">
+        <a href="{% url 'courses_page' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to All Courses
+        </a>
+    </div>
+</div>
+
+<!-- Original Floating Card CSS -->
+<style>
+    /* Course Header */
+    .course-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+    
+    .page-subtitle {
+        color: var(--secondary-color);
+        max-width: 700px;
+        margin: 0 auto 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .course-level-badge {
+        display: inline-block;
+        background: var(--primary-color);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    .course-level-badge i {
+        margin-right: 5px;
+    }
+    
+    /* Section Header */
+    .section-header {
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .section-subtitle {
+        color: var(--secondary-color);
+    }
+    
+    /* Course Boxes - Original Grid */
+    .course-boxes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    /* Course Card - Original Floating Design */
+    .course-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .course-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, rgba(66, 153, 225, 0.1) 0%, rgba(66, 153, 225, 0.2) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .course-icon i {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+    }
+    
+    .course-card-title {
+        font-size: 1.3rem;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+    
+    .course-card-description {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+    
+    .course-meta {
+        margin: 1rem 0;
+    }
+    
+    .meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .meta-item i {
+        font-size: 0.9rem;
+    }
+    
+    .course-actions {
+        margin-top: auto;
+    }
+    
+    .course-actions .btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 20px;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 15px;
+    }
+    
+    .empty-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(66, 153, 225, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .empty-icon i {
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+    
+    .empty-state h3 {
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+        color: var(--secondary-color);
+    }
+    
+    /* Navigation */
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (max-width: 768px) {
+        .course-boxes {
+            grid-template-columns: 1fr;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+        }
+        
+        .navigation-buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .navigation-buttons .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}

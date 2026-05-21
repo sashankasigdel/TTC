@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container study-container">
+  
+    
+    <!-- Header with Controls -->
+    <div class="study-header">
+        <h1 class="study-title">{{ chapter.title }}</h1>
+        <p class="study-subtitle"> {{ subject.title }}</p>
+        
+        <!-- Reader Controls -->
+        <div class="reader-tools">
+            <button class="tool-btn" id="darkModeToggle">
+                <i class="fas fa-moon"></i> Dark Mode
+            </button>
+            <button class="tool-btn" id="fullscreenToggle">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+            <a href="{% url 'subject_detail' course.slug subject.slug %}" class="tool-btn">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+    
+    <!-- PDF Viewer Container -->
+    <div class="pdf-viewer-wrapper">
+        <!-- Page Navigation -->
+        <div class="pdf-controls">
+            <button id="prevPage" class="page-btn">
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <span class="page-counter">
+                Page <span id="currentPage">1</span> of <span id="totalPages">--</span>
+            </span>
+            <button id="nextPage" class="page-btn">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- PDF Display Area -->
+        <div id="pdfViewer" class="pdf-viewer">
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+        
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomOut">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <span id="zoomLevel">100%</span>
+            <button class="zoom-btn" id="zoomIn">
+                <i class="fas fa-search-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Include PDF.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+
+<style>
+    /* PDF Viewer Styles */
+    .study-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .study-header {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .study-title {
+        font-size: 1.8rem;
+        color: #2d3748;
+        margin-bottom: 5px;
+    }
+    
+    .study-subtitle {
+        color: #718096;
+        margin-bottom: 20px;
+    }
+    
+    .reader-tools {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .tool-btn {
+        background: #4299e1;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        text-decoration: none;
+    }
+    
+    .tool-btn:hover {
+        background: #3182ce;
+    }
+    
+    .pdf-viewer-wrapper {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    .pdf-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .page-btn {
+        background: #4a5568;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .page-btn:hover {
+        background: #2d3748;
+    }
+    
+    .page-counter {
+        font-weight: 500;
+        color: #4a5568;
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    .pdf-viewer {
+        width: 100%;
+        min-height: 600px;
+        border: 1px solid #e2e8f0;
+        border-radius: 5px;
+        overflow: auto;
+        background: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #pdfCanvas {
+        max-width: 100%;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .zoom-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .zoom-btn {
+        background: #718096;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .zoom-btn:hover {
+        background: #4a5568;
+    }
+    
+    #zoomLevel {
+        min-width: 50px;
+        text-align: center;
+        font-weight: 500;
+    }
+    
+    /* Dark Mode */
+    body.dark-mode {
+        background: #1a202c;
+        color: #e2e8f0;
+    }
+    
+    body.dark-mode .study-header {
+        background: #2d3748;
+    }
+    
+    body.dark-mode .pdf-viewer {
+        background: #4a5568;
+    }
+    
+    body.dark-mode .page-btn {
+        background: #718096;
+    }
+    
+</style>
+
+<script>
+    // PDF Configuration
+    const pdfUrl = "{{ pdf_url|safe }}";
+    let pdfDoc = null;
+    let currentPage = 1;
+    let scale = 1.0;
+    
+    // DOM Elements
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+    const currentPageSpan = document.getElementById('currentPage');
+    const totalPagesSpan = document.getElementById('totalPages');
+    const zoomLevelSpan = document.getElementById('zoomLevel');
+    
+    // Load PDF
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+        pdfDoc = pdf;
+        totalPagesSpan.textContent = pdf.numPages;
+        renderPage(currentPage);
+    });
+    
+    // Render PDF Page
+    function renderPage(pageNum) {
+        pdfDoc.getPage(pageNum).then(function(page) {
+            const viewport = page.getViewport({ scale: scale });
+            
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            
+            page.render(renderContext).promise.then(function() {
+                currentPageSpan.textContent = pageNum;
+                zoomLevelSpan.textContent = Math.round(scale * 100) + '%';
+            });
+        });
+    }
+    
+    // Navigation Functions
+    function goToPrevPage() {
+        if (currentPage <= 1) return;
+        currentPage--;
+        renderPage(currentPage);
+    }
+    
+    function goToNextPage() {
+        if (currentPage >= pdfDoc.numPages) return;
+        currentPage++;
+        renderPage(currentPage);
+    }
+    
+    // Zoom Functions
+    function zoomIn() {
+        scale = Math.min(scale + 0.1, 3.0);
+        renderPage(currentPage);
+    }
+    
+    function zoomOut() {
+        scale = Math.max(scale - 0.1, 0.5);
+        renderPage(currentPage);
+    }
+    
+    // Event Listeners
+    document.getElementById('prevPage').addEventListener('click', goToPrevPage);
+    document.getElementById('nextPage').addEventListener('click', goToNextPage);
+    document.getElementById('zoomIn').addEventListener('click', zoomIn);
+    document.getElementById('zoomOut').addEventListener('click', zoomOut);
+    
+    // Fullscreen Toggle
+    document.getElementById('fullscreenToggle').addEventListener('click', function() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    });
+    
+    // Dark Mode Toggle
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const icon = this.querySelector('i');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.className = 'fas fa-sun';
+            this.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+        } else {
+            icon.className = 'fas fa-moon';
+            this.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+        }
+    });
+    
+    // Keyboard Navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') goToPrevPage();
+        if (e.key === 'ArrowRight') goToNextPage();
+        if (e.key === '+' || e.key === '=') zoomIn();
+        if (e.key === '-') zoomOut();
+    });
+</script>
+{% endblock %}

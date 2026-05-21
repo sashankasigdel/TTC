@@ -23,6 +23,9 @@ from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
+def home_view(request):
+    return render(request, 'index.html')  # your frontend index.html
+
 # ========== EXISTING FUNCTIONS (KEEP THESE) ==========
 def universal_page(request, page_name='index'):
     """Handle all pages including home"""

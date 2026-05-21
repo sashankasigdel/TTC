@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h1>{{ chapter.title }}</h1>
+    
+    <div class="mt-4">
+        {{ chapter.content|linebreaks }}
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'subject_detail' course.slug subject.slug %}" class="btn btn-secondary">
+            ← Back to Chapters
+        </a>
+    </div>
+</div>
+{% endblock %}
